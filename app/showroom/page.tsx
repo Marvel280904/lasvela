@@ -96,7 +96,7 @@ export default function Showroom() {
                             </div>
 
                             {/* Description Box (Desktop/Tablet) */}
-                            <div className="hidden md:block absolute bottom-0 right-6 max-w-sm lg:max-w-md bg-white/95 p-6 shadow-lg z-20">
+                            <div className="hidden md:block absolute bottom-0.5 right-0 max-w-sm lg:max-w-md bg-white/95 p-2 lg:p-3 z-20">
                                 <p className="text-[#2c3e50] font-be-vietnam text-xs lg:text-sm leading-relaxed">
                                     {floor.description}
                                 </p>
@@ -104,7 +104,7 @@ export default function Showroom() {
                         </div>
 
                         {/* Description Box (Mobile) */}
-                        <div className="md:hidden mt-6 bg-white p-6 shadow-sm">
+                        <div className="md:hidden mb-6 bg-white p-6 shadow-sm">
                             <p className="text-[#2c3e50] font-be-vietnam text-sm leading-relaxed">
                                 {floor.description}
                             </p>
