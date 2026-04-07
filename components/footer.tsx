@@ -94,11 +94,11 @@ export default function Footer() {
         </div>
 
         {/* Mobile View: Stacked Layout with Dividers */}
-        <div className="lg:hidden space-y-12 mb-20 text-center">
+        <div className="lg:hidden mb-20 text-center">
           {/* Mobile Logo */}
-          <div className="flex justify-center pb-12 border-b border-gray-800">
+          <div className="flex justify-center py-10 border-b border-white/50">
             <Link href="/" className="inline-block">
-              <div className="relative w-48 h-12 grayscale brightness-200">
+              <div className="relative w-40 h-10 grayscale brightness-200">
                 <Image
                   src="/logo/logo.png"
                   alt="Lasvela Logo"
@@ -110,30 +110,30 @@ export default function Footer() {
           </div>
 
           {/* Mobile Showroom */}
-          <div className="grid grid-cols-2 lg:grid-cols-1 items-start gap-4 pb-12 border-b border-gray-800">
-            <h4 className="text-xs font-michroma font-bold tracking-widest uppercase text-left">Showroom</h4>
-            <div className="space-y-2 font-be-vietnam text-xs leading-relaxed text-gray-400 text-right">
+          <div className="grid grid-cols-2 lg:grid-cols-1 items-start gap-4 py-8 border-b border-white/50">
+            <h4 className="text-[10px] font-michroma font-bold tracking-widest uppercase text-left opacity-80">Showroom</h4>
+            <div className="space-y-2 font-be-vietnam text-[11px] leading-relaxed text-gray-400 text-right">
               <p>{footerData.showroom.address}</p>
               <p>{footerData.showroom.hours}</p>
             </div>
           </div>
 
           {/* Mobile Newsletter */}
-          <div className="grid grid-cols-2 items-center gap-4 pb-12 border-b border-gray-800">
-            <h4 className="text-xs font-michroma font-bold tracking-widest uppercase text-left">Newsletter</h4>
+          <div className="grid grid-cols-2 items-center gap-4 py-8 border-b border-white/50">
+            <h4 className="text-[10px] font-michroma font-bold tracking-widest uppercase text-left opacity-80">Newsletter</h4>
             <div className="relative text-right">
               <input
                 type="email"
                 placeholder={footerData.newsletter.placeholder}
-                className="bg-transparent border-b border-gray-600 w-full py-1 font-be-vietnam text-xs outline-none focus:border-white transition-colors"
+                className="bg-transparent border-b border-gray-600 w-full py-1 font-be-vietnam text-[11px] outline-none focus:border-white transition-colors text-right"
               />
             </div>
           </div>
 
           {/* Mobile Connect */}
-          <div className="grid grid-cols-2 items-start gap-4 pb-12 border-b border-gray-800">
-            <h4 className="text-xs font-michroma font-bold tracking-widest uppercase text-left">Connect</h4>
-            <ul className="space-y-2 font-be-vietnam text-xs text-gray-400 text-right">
+          <div className="grid grid-cols-2 items-start gap-4 py-8 border-b border-white/50">
+            <h4 className="text-[10px] font-michroma font-bold tracking-widest uppercase text-left opacity-80">Connect</h4>
+            <ul className="space-y-2 font-be-vietnam text-[11px] text-gray-400 text-right">
               {footerData.connect.map((link) => (
                 <li key={link.name}>
                   <Link href={link.href} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
@@ -145,9 +145,9 @@ export default function Footer() {
           </div>
 
           {/* Mobile Contact */}
-          <div className="grid grid-cols-2 items-start gap-4 pb-12 border-b border-gray-800">
-            <h4 className="text-xs font-michroma font-bold tracking-widest uppercase text-left">Contact</h4>
-            <div className="space-y-2 font-be-vietnam text-xs text-gray-400 text-right">
+          <div className="grid grid-cols-2 items-start gap-4 py-8 border-b border-white/50">
+            <h4 className="text-[10px] font-michroma font-bold tracking-widest uppercase text-left opacity-80">Contact</h4>
+            <div className="space-y-2 font-be-vietnam text-[11px] text-gray-400 text-right">
               <Link href={footerData.contact.whatsappHref} target="_blank" rel="noopener noreferrer" className="block hover:text-white transition-colors">
                 WhatsApp: {footerData.contact.whatsapp}
               </Link>
@@ -159,12 +159,12 @@ export default function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="pt-12 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0 text-xs md:text-sm font-be-vietnam text-gray-500">
-          <p>© Copyright {currentYear}. Essen. All Rights Reserved.</p>
-          <div className="flex space-x-8">
-            <Link href="/terms" className="hover:text-white transition-colors">Terms of service</Link>
-            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-          </div>
+        <div className="flex flex-col items-center space-y-6 text-[10px] md:text-xs font-be-vietnam text-gray-500 text-center">
+            <p>© Copyright {currentYear}. Essen. All Rights Reserved.</p>
+            <div className="flex space-x-8 tracking-widest">
+                <Link href="/terms" className="hover:text-white transition-colors">Terms of service</Link>
+                <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            </div>
         </div>
       </div>
     </footer>
