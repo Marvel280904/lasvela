@@ -206,7 +206,7 @@ export function CategoryForm({ initialData, isEditing = false }: CategoryFormPro
               <Input
                 id="name"
                 {...form.register("name")}
-                error={form.formState.errors.name?.message}
+                // error={form.formState.errors.name?.message}
                 onBlur={() => {
                   if (!isEditing && !form.getValues("slug")) {
                     generateSlug()
@@ -228,7 +228,9 @@ export function CategoryForm({ initialData, isEditing = false }: CategoryFormPro
                   Generate
                 </Button>
               </div>
-              <Input id="slug" {...form.register("slug")} error={form.formState.errors.slug?.message} />
+              <Input id="slug" {...form.register("slug")} 
+                // error={form.formState.errors.slug?.message}
+              />
               {form.formState.errors.slug && (
                 <p className="text-sm text-red-500">{form.formState.errors.slug.message}</p>
               )}

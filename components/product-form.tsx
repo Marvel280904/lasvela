@@ -33,16 +33,16 @@ const productFormSchema = z.object({
   slug: z.string().min(1, "Slug is required"),
   category: z.string().min(1, "Category is required"),
   categoryId: z.string().min(1, "Category ID is required"),
-  price: z.number().min(0, "Price must be 0 or greater"),
+  price: z.number().min(0, "Price must be 0 or greater").optional(),
   description: z.string().min(1, "Description is required"),
   features: z.array(z.string()),
   images: z.array(z.string()),
   careInstructions: z.array(z.string()).optional(),
   deliveryTime: z.string().optional(),
   warranty: z.string().optional(),
-  inStock: z.boolean().default(true),
-  isWeeklyBestSeller: z.boolean().default(false),
-  isVisible: z.boolean().default(true),
+  inStock: z.boolean(),
+  isWeeklyBestSeller: z.boolean().optional(),
+  isVisible: z.boolean(),
   thumbnailImage: z.string().optional(),
 })
 
@@ -880,7 +880,7 @@ export function ProductForm({ initialData, isEditing = false }: ProductFormProps
                         }}
                       >
                         <img
-                          src="/images/img-default.png"
+                          src={image || "/images/img-default.png"}
                           alt={`Product image ${index + 1}`}
                           className="object-cover w-full h-full"
                         />
