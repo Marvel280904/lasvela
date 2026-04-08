@@ -21,6 +21,7 @@ export default function About() {
             alt="Home Hero Background"
             fill
             priority
+            sizes="100vw"
             className="object-cover object-[65%_30%]"
             />
             {/* Subtle Overlay to ensure text readability */}
@@ -101,6 +102,7 @@ export default function About() {
                         src="/images/img2.png"
                         alt="Meaningful Living"
                         fill
+                        sizes="(max-width: 1024px) 100vw, 50vw"
                         className="object-cover"
                     />
                 </motion.div>
@@ -124,6 +126,7 @@ export default function About() {
                             src="/images/img3.png"
                             alt="Purpose & Living"
                             fill
+                            sizes="(max-width: 1024px) 100vw, 50vw"
                             className="object-cover"
                         />
                     </motion.div>

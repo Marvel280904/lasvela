@@ -20,6 +20,7 @@ export default function Showroom() {
             alt="Home Hero Background"
             fill
             priority
+            sizes="100vw"
             className="object-cover object-[75%_30%]"
             />
             {/* Subtle Overlay to ensure text readability */}
@@ -86,6 +87,7 @@ export default function Showroom() {
                                 src={floor.image}
                                 alt={floor.title}
                                 fill
+                                sizes="100vw"
                                 className="object-contain"
                             />
                             

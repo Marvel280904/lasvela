@@ -54,6 +54,7 @@ export default function Contact() {
             alt="Home Hero Background"
             fill
             priority
+            sizes="100vw"
             className="object-cover object-[60%_50%]"
             />
             {/* Subtle Overlay to ensure text readability */}
@@ -116,6 +117,7 @@ export default function Contact() {
                             src="/images/img4.png"
                             alt="Lasvela Furniture"
                             fill
+                            sizes="(max-width: 1024px) 100vw, 512px"
                             className="object-cover"
                         />
                     </motion.div>

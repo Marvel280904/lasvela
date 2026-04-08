@@ -38,6 +38,7 @@ export default function Footer() {
                   src="/logo/logo.png"
                   alt="Lasvela Logo"
                   fill
+                  sizes="160px"
                   className="object-contain"
                 />
               </div>
@@ -103,6 +104,7 @@ export default function Footer() {
                   src="/logo/logo.png"
                   alt="Lasvela Logo"
                   fill
+                  sizes="160px"
                   className="object-contain"
                 />
               </div>

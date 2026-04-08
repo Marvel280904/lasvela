@@ -24,3 +24,43 @@ body {
   color: var(--foreground);
   font-family: var(--font-michroma), sans-serif;
 }
+
+@layer utilities {
+  /* CUSTOM SCROLLBAR */
+  
+  /* Lebar scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px; 
+    height: 8px;
+  }
+
+  /* Track scrollbar */
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Thumb scroll nya */
+  ::-webkit-scrollbar-thumb {
+    background-color: #2c3e50;
+    border-radius: 9999px;
+    
+    /* Scrollbar terlihat "mengambang" dan tipis */
+    border: 3px solid transparent; 
+    background-clip: content-box; 
+  }
+
+  /* Scrollbar hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #2c3e50;
+    border: 2px solid transparent;
+  }
+
+  /* Hide tampilan scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

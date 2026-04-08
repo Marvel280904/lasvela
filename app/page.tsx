@@ -34,6 +34,7 @@ export default function Home() {
             alt="Home Hero Background"
             fill
             priority
+            sizes="100vw"
             className="object-cover object-[60%_50%]"
           />
           {/* Subtle Overlay to ensure text readability */}
@@ -85,6 +86,7 @@ export default function Home() {
               src="/images/img1.png"
               alt="Design That Endures furniture"
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 800px"
               className="object-cover shadow-xl"
             />
           </motion.div>
@@ -172,6 +174,7 @@ export default function Home() {
                       src={item.src}
                       alt={item.name}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                   </div>
@@ -323,6 +326,7 @@ export default function Home() {
               src="/images/lasvela-location.png"
               alt="Lasvela Showroom Location"
               fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover transition-transform duration-1000 group-hover:scale-105"
             />
             {/* Image Footer Overlay
@@ -351,6 +355,7 @@ export default function Home() {
             src="/images/cta-bg.png"
             alt="Create a Home That Feels Right"
             fill
+            sizes="100vw"
             className="object-cover object-[70%_50%]"
             priority
           />
