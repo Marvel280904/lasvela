@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart } from "lucide-react";
 import { fetchAllProductsFromApi } from "@/lib/product-service";
 import type { Product } from "@/lib/db/schema";
 
@@ -110,23 +109,15 @@ export function RelatedProducts({ currentCategory, excludeSlug }: RelatedProduct
                     </div>
 
                     {/* Product Details */}
-                    <div className="flex items-end justify-between mt-auto">
-                      <div className="flex flex-col gap-1 pr-4">
+                    <div className="flex items-center justify-between mt-auto">
+                      <div className="flex flex-col gap-0.5 pr-4">
                         <h3 className="font-bold text-[#2C3E50] text-[15px] leading-tight line-clamp-1">{p.name}</h3>
                         <p className="text-xs text-[#2C3E50]/60 font-medium">{p.category}</p>
-                        <p className="text-sm font-semibold text-[#2C3E50] mt-1 tracking-wide">
-                          ${p.price ? p.price.toFixed(2) : "0.00"}
-                        </p>
                       </div>
                       
-                      {/* Action Icons */}
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        <button 
-                          onClick={(e) => { e.preventDefault(); }}
-                          className="h-8 w-8 rounded-full border border-[#2C3E50]/20 flex items-center justify-center text-[#2C3E50]/60 hover:text-[#2C3E50] hover:border-[#2C3E50] hover:bg-white/50 transition-all">
-                          <ShoppingCart className="w-3.5 h-3.5" strokeWidth={2} />
-                        </button>
-                      </div>
+                      <p className="text-[15px] font-bold text-[#2C3E50] tracking-tight shrink-0">
+                        ${p.price ? p.price.toFixed(2) : "0.00"}
+                      </p>
                     </div>
                   </Link>
                 </motion.div>
