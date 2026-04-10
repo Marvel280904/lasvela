@@ -28,7 +28,7 @@ export function UserForm({ initialData, currentUserRole, isEditing = false }: Us
     name: "",
     email: "",
     password: "",
-    role: "editor" as UserRole
+    role: "admin" as UserRole
   })
 
   // Initialize form with initial data
@@ -38,7 +38,7 @@ export function UserForm({ initialData, currentUserRole, isEditing = false }: Us
         name: initialData.name || "",
         email: initialData.email || "",
         password: "", // Password kosong untuk edit
-        role: initialData.role || "editor"
+        role: initialData.role || "admin"
       })
     }
   }, [initialData])
@@ -149,8 +149,8 @@ export function UserForm({ initialData, currentUserRole, isEditing = false }: Us
   
   // Available roles based on current user's role
   const availableRoles = canEditRoles 
-    ? ["super_admin", "admin", "editor", "customer"] 
-    : ["editor", "customer"]
+    ? ["super_admin", "admin"] 
+    : ["admin"]
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
@@ -212,8 +212,6 @@ export function UserForm({ initialData, currentUserRole, isEditing = false }: Us
               <option key={role} value={role}>
                 {role === "super_admin" && "Super Admin"}
                 {role === "admin" && "Admin"}
-                {role === "editor" && "Editor"}
-                {role === "customer" && "Customer"}
               </option>
             ))}
           </select>

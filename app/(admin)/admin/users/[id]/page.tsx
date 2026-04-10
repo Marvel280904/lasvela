@@ -72,6 +72,19 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
     fetchUser()
   }, [id, router, currentUser])
 
+  // Redirect if user doesn't have permission to edit target user
+  useEffect(() => {
+    if (!loading && currentUser && user) {
+      const isSuperAdmin = currentUser.role === "super_admin"
+      const isEditingSelf = currentUser.id === user.id
+      const isEditingAdmin = user.role === "admin" || user.role === "super_admin"
+
+      if (isEditingAdmin && !isSuperAdmin && !isEditingSelf) {
+        router.push("/admin/users")
+      }
+    }
+  }, [loading, currentUser, user, router])
+
   // Handle delete user
   const handleDelete = async () => {
     if (!confirm("Are you sure you want to delete this user?")) return
@@ -113,7 +126,6 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
 
   // Only super admins can edit other admin users
   if (isEditingAdmin && !isSuperAdmin && !isEditingSelf) {
-    router.push("/admin/users")
     return null
   }
 
