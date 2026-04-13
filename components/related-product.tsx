@@ -70,8 +70,8 @@ export function RelatedProducts({ currentCategory, excludeSlug }: RelatedProduct
   if (loading || relatedProducts.length === 0) return null;
 
   return (
-    <section className="bg-[#FCF9EE] border-t border-[#2c3e50]/20 py-16 md:py-24">
-      <div className="max-w-8xl mx-auto px-6 lg:px-24">
+    <section className="bg-[#FCF9EE] px-6 md:px-12 xl:px-24 border-t border-[#2c3e50]/20 py-16 md:py-24">
+      <div className="max-w-8xl mx-auto">
         <h3 className="font-michroma text-3xl md:text-4xl font-bold tracking-wide text-[#2c3e50] mb-10">
           Related Products
         </h3>

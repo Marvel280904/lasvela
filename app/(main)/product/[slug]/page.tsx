@@ -11,11 +11,13 @@ import { useParams } from "next/navigation";
 import { Accordion } from "@/components/custom-accordion";
 import { LightboxModal } from "@/components/image-interaction";
 import { RelatedProducts } from "@/components/related-product";
+import { useCartStore } from "@/lib/store/useCartStore";
 
 
 export default function ProductDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
+  const { addItem } = useCartStore();
 
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState<Product | null>(null);
@@ -110,6 +112,22 @@ export default function ProductDetailPage() {
   // Original Price Mapping
   const finalPrice = (matchingCombination?.price || product.price || 0) + addOnsTotal;
 
+  const handleAddToCart = () => {
+    if (!product) return;
+
+    addItem({
+      id: product.id,
+      slug: product.slug,
+      name: product.name,
+      category: product.category,
+      image: activeImage,
+      price: finalPrice,
+      material: selectedMaterial,
+      dimension: selectedDimension,
+      addOns: selectedAddOns
+    });
+  };
+
   // Render Features
   const featuresList = (product.features || []).filter(f => f.trim() !== "");
   const careList = (product.careInstructions || []).filter(c => c.trim() !== "");
@@ -126,7 +144,7 @@ export default function ProductDetailPage() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="bg-[#2c3e50] pt-24 pb-8 px-6 lg:px-16 w-full text-white shadow-md"
+        className="bg-[#2c3e50] pt-24 pb-8 px-6 md:px-12 xl:px-24 w-full text-white shadow-md"
       >
         <div className="max-w-[1400px] mx-auto flex items-center justify-between text-[11px] font-michroma tracking-widest uppercase">
           <div className="flex space-x-2 text-white/60">
@@ -145,7 +163,7 @@ export default function ProductDetailPage() {
       </motion.div>
 
       {/* Main Core Detail Area */}
-      <main className="max-w-8xl mx-auto px-6 lg:px-24 py-10 md:py-16">
+      <main className="max-w-8xl mx-auto px-6 md:px-12 xl:px-24 py-10 md:py-16">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 xl:gap-24">
           
           {/* Left Column: Media Gallery */}
@@ -347,6 +365,7 @@ export default function ProductDetailPage() {
               </div>
               
               <button 
+                onClick={handleAddToCart}
                 disabled={!isCurrentlyInStock}
                 className={`flex-1 max-w-sm py-4 md:py-5 px-6 font-be-vietnam tracking-[0.2em] uppercase text-sm xl:text-lg font-bold shadow-xl transition-all duration-300
                   ${isCurrentlyInStock 
@@ -367,9 +386,9 @@ export default function ProductDetailPage() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="border-t border-[#2c3e50]/10 bg-[#F8F5EA]"
+        className="border-t border-[#2c3e50]/10 bg-[#F8F5EA] px-6 md:px-12 xl:px-24"
       >
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-16 py-16">
+        <div className="max-w-8xl mx-auto py-16">
           <div className="flex flex-col lg:flex-row items-start">
             
             {/* Title Section */}

@@ -41,7 +41,7 @@ export default function Contact() {
   return (
     <main className="relative min-h-screen overflow-x-clip">
         {/* Hero Section */}
-        <section className="relative flex min-h-screen items-start xl:items-center px-6 md:px-12 lg:px-24 overflow-hidden">
+        <section className="relative flex min-h-screen items-start xl:items-center px-6 md:px-12 xl:px-24 overflow-hidden">
         {/* Background Section */}
         <motion.div
             initial={{ scale: 1.1 }}
@@ -84,7 +84,7 @@ export default function Contact() {
         </section>
 
         {/* Contact Info & Form Section */}
-        <section className="bg-[#FCF9EE] py-24 md:py-32 px-6 md:px-12 lg:px-24">
+        <section className="bg-[#FCF9EE] py-24 md:py-32 px-6 md:px-12 xl:px-24">
             <div className="max-w-8xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-12">
                 {/* Left Side: Information */}
                 <motion.div 
@@ -268,7 +268,7 @@ export default function Contact() {
         </section>
 
         {/* Come Visit Our Space Section */}
-        <section className="bg-[#F8F5EA] py-24 md:py-32 px-6 md:px-12 lg:px-24 border-t border-[#FCF9EE]/50">
+        <section className="bg-[#F8F5EA] py-24 md:py-32 px-6 md:px-12 xl:px-24 border-t border-[#FCF9EE]/50">
             <div className="max-w-8xl mx-auto">
                 <div className="mb-10">
                     <motion.h2 

@@ -15,6 +15,7 @@ import {
   Tag
 } from "lucide-react";
 import Testimonial from "@/components/home/Testimonial";
+import WeeklyBestSeller from "@/components/home/best-seller";
 
 export default function Home() {
   return (
@@ -250,6 +251,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <WeeklyBestSeller />
 
       {/* Experience Section */}
       <section className="bg-[#FCF9EE] py-32 px-6 md:px-12 lg:px-24">

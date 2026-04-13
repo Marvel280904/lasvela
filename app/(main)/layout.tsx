@@ -1,6 +1,7 @@
 import { Michroma, Be_Vietnam_Pro } from "next/font/google";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import { ModalCart } from "@/components/modal-cart";
 
 const michroma = Michroma({
   weight: "400",
@@ -23,6 +24,7 @@ export default function MainLayout({
     <div className={`${michroma.variable} ${beVietnamPro.variable} font-michroma flex flex-col min-h-screen`}>
       <Header />
       <main className="flex-1">
+        <ModalCart />
         {children}
       </main>
       <Footer />

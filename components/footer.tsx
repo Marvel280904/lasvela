@@ -26,7 +26,7 @@ const footerData = {
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className="bg-[#1a252f] text-white pt-24 pb-12 px-6 md:px-12 lg:px-24">
+    <footer className="bg-[#1a252f] text-white pt-24 pb-12 px-6 md:px-12 xl:px-24">
       <div className="max-w-8xl mx-auto">
         {/* Desktop View: Grid Layout */}
         <div className="hidden lg:grid lg:grid-cols-5 gap-12 mb-24">
@@ -95,7 +95,7 @@ export default function Footer() {
         </div>
 
         {/* Mobile View: Stacked Layout with Dividers */}
-        <div className="lg:hidden mb-20 text-center">
+        <div className="lg:hidden mb-10 lg:mb-20 text-center">
           {/* Mobile Logo */}
           <div className="flex justify-center py-10 border-b border-white/50">
             <Link href="/" className="inline-block">
@@ -160,8 +160,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Section */}
-        <div className="flex flex-col items-center space-y-6 text-[10px] md:text-xs font-be-vietnam text-gray-500 text-center">
+        <div className="flex flex-col lg:flex-row items-center justify-between space-y-6 lg:space-y-0 text-[10px] md:text-sm font-be-vietnam text-gray-400 text-center lg:text-left pt-6 lg:border-t border-white/20">
             <p>© Copyright {currentYear}. Essen. All Rights Reserved.</p>
             <div className="flex space-x-8 tracking-widest">
                 <Link href="/terms" className="hover:text-white transition-colors">Terms of service</Link>

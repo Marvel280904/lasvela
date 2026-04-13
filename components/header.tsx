@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCartStore } from "@/lib/store/useCartStore";
 
 const navItems = [
   { name: "PRODUCT", href: "/product" },
@@ -17,6 +18,12 @@ const navItems = [
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { openCart, getTotalItems } = useCartStore();
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,10 +36,10 @@ export default function Header() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "bg-[#2c3e50]/95 backdrop-blur-sm shadow-xl py-3" : "bg-[#2c3e50] py-3"
+        scrolled ? "bg-[#2c3e50]/95 backdrop-blur-sm shadow-xl py-3 px-6 md:px-12 xl:px-24" : "px-6 md:px-12 xl:px-24 bg-[#2c3e50] py-3"
       }`}
     >
-      <div className="container max-w-8xl mx-auto px-6 lg:px-17 flex items-center justify-between">
+      <div className="container max-w-8xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="relative h-12 w-32 md:h-14 md:w-40">
           <Image
@@ -60,9 +67,17 @@ export default function Header() {
         </nav>
 
         {/* Right Icons */}
-        <div className="flex items-center space-x-6">
-          <button className="text-white hover:text-gray-400 transition-colors relative">
+        <div className="flex items-center space-x-4 lg:space-x-0">
+          <button 
+            onClick={openCart}
+            className="text-white hover:text-gray-400 transition-colors relative"
+          >
             <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" strokeWidth={1.5} />
+            {mounted && getTotalItems() > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold min-w-[18px] h-[18px] flex items-center justify-center rounded-full px-1">
+                {getTotalItems()}
+              </span>
+            )}
           </button>
           
           {/* Mobile Menu Toggle */}

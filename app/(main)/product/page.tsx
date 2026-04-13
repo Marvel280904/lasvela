@@ -99,8 +99,8 @@ export default function ProductPage() {
   }, [allProducts, searchTerm, sortBy, selectedCategories]);
 
   return (
-    <main className="min-h-screen bg-[#F8F5EA] pt-32 pb-24 font-be-vietnam selection:bg-[#2C3E50] selection:text-white">
-      <div className="container max-w-8xl mx-auto px-6 lg:px-18">
+    <main className="min-h-screen bg-[#F8F5EA] px-6 md:px-12 xl:px-24 pt-32 pb-24 font-be-vietnam selection:bg-[#2C3E50] selection:text-white">
+      <div className="container max-w-8xl mx-auto">
         
         {/* Top Controls Section */}
         <div className="space-y-6 mb-12">

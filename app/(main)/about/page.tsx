@@ -8,7 +8,7 @@ export default function About() {
   return (
     <main className="relative min-h-screen overflow-x-clip">
         {/* Hero Section */}
-        <section className="relative flex min-h-screen items-start xl:items-center px-6 md:px-12 lg:px-24 overflow-hidden">
+        <section className="relative flex min-h-screen items-start xl:items-center px-6 md:px-12 xl:px-24 overflow-hidden">
         {/* Background Section */}
         <motion.div
             initial={{ scale: 1.1 }}
@@ -52,7 +52,7 @@ export default function About() {
         </section>
 
         {/* Meaningful Living Section */}
-        <section className="bg-[#FCF9EE] py-20 md:py-32 px-6 md:px-12 lg:px-24">
+        <section className="bg-[#FCF9EE] py-20 md:py-32 px-6 md:px-12 xl:px-24">
         <div className="max-w-8xl mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
             {/* Content Side */}
             <div className="w-full lg:w-1/2 order-2 lg:order-1">
@@ -111,7 +111,7 @@ export default function About() {
         </section>
 
         {/* Where Purpose Meets Section */}
-        <section className="bg-[#F8F5EA] py-20 md:py-32 px-6 md:px-12 lg:px-24">
+        <section className="bg-[#F8F5EA] py-20 md:py-32 px-6 md:px-12 xl:px-24">
             <div className="max-w-8xl mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
                 {/* Image Side - Now on the left for deskop balance */}
                 <div className="w-full lg:w-1/2 order-1">
@@ -169,7 +169,7 @@ export default function About() {
         </section>
 
         {/* Stats Bar Section */}
-        <section className="bg-[#2c3e50] py-20 px-6 md:px-12 lg:px-24">
+        <section className="bg-[#2c3e50] py-20 px-6 md:px-12 xl:px-24">
             <div className="max-w-8xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
                     {[1, 2, 3].map((item) => (
@@ -194,7 +194,7 @@ export default function About() {
         </section>
 
         {/* Why Lasvela Section */}
-        <section className="bg-[#F8F5EA] py-24 md:py-32 px-6 md:px-12 lg:px-24">
+        <section className="bg-[#F8F5EA] py-24 md:py-32 px-6 md:px-12 xl:px-24">
             <div className="max-w-8xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-32">
                 {/* Left Side: Sticky Content */}
                 <div className="lg:w-2/5">
@@ -271,7 +271,7 @@ export default function About() {
         </section>
 
         {/* Our Services Section */}
-        <section className="bg-[#FCF9EE] py-24 md:py-32 px-6 md:px-12 lg:px-24">
+        <section className="bg-[#FCF9EE] py-24 md:py-32 px-6 md:px-12 xl:px-24">
             <div className="max-w-8xl mx-auto">
                 <motion.h2 
                     initial={{ opacity: 0, y: 20 }}

@@ -7,7 +7,7 @@ export default function Showroom() {
   return (
     <main className="relative min-h-screen overflow-x-clip">
         {/* Hero Section */}
-        <section className="relative flex min-h-screen items-start xl:items-center px-6 md:px-12 lg:px-24 overflow-hidden">
+        <section className="relative flex min-h-screen items-start xl:items-center px-6 md:px-12 xl:px-24 overflow-hidden">
         {/* Background Section */}
         <motion.div
             initial={{ scale: 1.1 }}
@@ -51,7 +51,7 @@ export default function Showroom() {
         </section>
 
         {/* Floors Section */}
-        <section className="bg-[#FCF9EE] py-20 px-6 md:px-12 lg:px-24">
+        <section className="bg-[#FCF9EE] py-20 px-6 md:px-12 xl:px-24">
             <div className="max-w-8xl mx-auto">
                 {[
                     {
@@ -116,7 +116,7 @@ export default function Showroom() {
         </section>
 
         {/* Experience Section */}
-        <section className="bg-[#F8F5EA] py-32 px-6 md:px-12 lg:px-24 border-t border-gray-200/50">
+        <section className="bg-[#F8F5EA] py-32 px-6 md:px-12 xl:px-24 border-t border-gray-200/50">
             <div className="max-w-8xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-32">
                 {/* Left Side: Sticky Content */}
                 <div className="lg:w-2/5">

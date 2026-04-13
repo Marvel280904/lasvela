@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence, useScroll, useMotionValue, useSpring } from "framer-motion";
-import { UserCircle } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { UserCircle, ArrowLeft, ArrowRight } from "lucide-react";
 
 // Dummy Data
 const testimonials = [
@@ -63,107 +63,145 @@ const testimonials = [
 ];
 
 export default function Testimonial() {
-  const [index, setIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0); 
   const [isPaused, setIsPaused] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Determine items visible based on screen size
-  // Simple hack: 3 on desktop, 1 on mobile
-  const getVisibleCount = () => {
-    if (typeof window === "undefined") return 3;
-    return window.innerWidth < 768 ? 1 : 3;
+  // Total dots to show (5 as per the new image)
+  const totalDots = 5;
+
+  const scroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth, scrollWidth } = scrollRef.current;
+      
+      let scrollTo;
+      if (direction === "left") {
+        scrollTo = scrollLeft - clientWidth;
+        if (scrollTo < -10) scrollTo = scrollWidth;
+      } else {
+        scrollTo = scrollLeft + clientWidth;
+        if (scrollLeft + clientWidth + 50 >= scrollWidth) {
+           scrollTo = 0;
+        }
+      }
+
+      scrollRef.current.scrollTo({ left: scrollTo, behavior: "smooth" });
+    }
   };
 
-  const nextSlide = useCallback(() => {
-    setIndex((prev) => (prev + 1) % testimonials.length);
-  }, []);
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      
+      // Calculate active dot index (0 to 4)
+      const scrollPercentage = scrollLeft / (scrollWidth - clientWidth);
+      const dotIndex = Math.min(Math.round(scrollPercentage * (totalDots - 1)), totalDots - 1);
+      
+      if (dotIndex !== activeIndex) {
+        setActiveIndex(dotIndex);
+      }
+    }
+  };
 
+  // Autoscroll logic
   useEffect(() => {
     if (isPaused) return;
-    const timer = setInterval(() => {
-      nextSlide();
-    }, 4000);
-    return () => clearInterval(timer);
-  }, [isPaused, nextSlide]);
+    
+    const interval = setInterval(() => {
+      scroll("right");
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isPaused, activeIndex]);
 
   return (
     <section className="bg-[#F8F5EA] py-32 px-6 md:px-12 lg:px-24 overflow-hidden relative">
       <div className="max-w-8xl mx-auto">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-24"
-        >
-          <h2 className="text-4xl md:text-5xl font-michroma font-bold text-[#2c3e50] mb-6">
-            Testimonials
-          </h2>
-          <p className="text-[#2c3e50] font-be-vietnam text-sm md:text-base">
-            What our customers say about us.
-          </p>
-        </motion.div>
+        
+        {/* Header - Centered as per new design */}
+        <div className="flex flex-col items-center text-center mb-24 space-y-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="space-y-4"
+          >
+            <h1 className="text-3xl md:text-4xl font-michroma font-bold text-[#2C3E50] tracking-wider uppercase">
+              Testimonials
+            </h1>
+            <p className="text-[#2C3E50]/70 font-be-vietnam text-sm md:text-base max-w-xl">
+              What our customers say about us.
+            </p>
+          </motion.div>
+        </div>
 
         {/* Carousel Container */}
         <div 
-          className="relative overflow-hidden cursor-grab active:cursor-grabbing"
+          className="relative group touch-pan-x"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          <motion.div
-            animate={{ x: `-${index * (100 / getVisibleCount())}%` }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            onDragEnd={(e, { offset, velocity }) => {
-              if (offset.x < -100) nextSlide();
-              else if (offset.x > 100) setIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-            }}
-            className="flex"
+          <div
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="flex space-x-6 md:space-x-8 overflow-x-auto scrollbar-hide pb-20 snap-x snap-mandatory scroll-smooth"
           >
-            {testimonials.map((item) => (
-              <div 
-                key={item.id} 
-                className="flex-shrink-0 w-full md:w-1/2 lg:w-1/3 px-4"
+            {testimonials.map((item, idx) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: idx * 0.05 }}
+                className="flex-shrink-0 w-[82%] md:w-[48%] lg:w-[32%] snap-center md:snap-start"
               >
-                <div className="bg-white rounded-2xl p-10 h-full border border-[#2c3e50]/5 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col space-y-8">
-                  <div className="flex items-center space-x-5">
-                    <div className="bg-[#2c3e50]/5 p-2 rounded-full">
-                      <UserCircle className="w-12 h-12 text-[#2c3e50]/40" strokeWidth={1} />
+                <div className="bg-white rounded-xl p-8 lg:p-6 xl:p-12 h-full border border-[#2c3e50]/5 shadow-sm hover:shadow-2xl transition-all duration-700 flex flex-col space-y-10 min-h-[400px]">
+                  <div className="flex items-center space-x-6">
+                    <div className="bg-[#2c3e50]/5 p-3 rounded-full border border-[#2c3e50]/10">
+                      <UserCircle className="w-10 h-10 xl:w-14 xl:h-14 text-[#2c3e50]/40" strokeWidth={0.8} />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold font-michroma text-[#2c3e50] tracking-wider uppercase">
+                      <h4 className="text-base lg:text-sm xl:text-base font-bold font-michroma text-[#2c3e50] tracking-wider uppercase">
                         {item.name}
                       </h4>
-                      <p className="text-[#2c3e50]/60 font-be-vietnam text-[10px] uppercase tracking-[0.2em] mt-1">
+                      <p className="text-[#2c3e50]/60 font-be-vietnam text-[11px] uppercase tracking-[0.25em] mt-1.5 font-medium">
                         {item.tagline}
                       </p>
                     </div>
                   </div>
                   
-                  <p className="text-[#2c3e50]/80 font-be-vietnam text-sm leading-relaxed flex-1">
-                    "{item.body}"
-                  </p>
+                  <div className="relative">
+                     <span className="absolute -top-4 -left-2 text-6xl text-[#2c3e50]/5 font-serif opacity-50">"</span>
+                     <p className="text-[#2c3e50]/80 font-be-vietnam text-[15px] leading-relaxed relative z-10">
+                       {item.body}
+                     </p>
+                  </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
 
-        {/* Indicators */}
-        <div className="flex justify-center items-center space-x-3 mt-16">
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setIndex(i)}
-              className={`h-1.5 rounded-full transition-all duration-500 ${
-                index === i 
-                  ? "bg-[#2c3e50] w-8 shadow-md" 
-                  : "bg-[#2c3e50]/15 w-1.5 hover:bg-[#2c3e50]/30"
-              }`}
-            />
-          ))}
+        {/* Pagination Dots (5 Dots as per image) */}
+        <div className="flex justify-center items-center space-x-2">
+           {[...Array(totalDots)].map((_, i) => (
+              <button
+                key={i}
+                onClick={() => {
+                   if(scrollRef.current) {
+                      const { scrollWidth, clientWidth } = scrollRef.current;
+                      const targetX = i * (scrollWidth / totalDots);
+                      scrollRef.current.scrollTo({ left: targetX, behavior: "smooth" });
+                   }
+                }}
+                className={`w-2 h-2 rounded-full transition-all duration-500 ease-in-out ${
+                  activeIndex === i 
+                    ? "bg-[#2c3e50] scale-125 shadow-md" 
+                    : "bg-[#2c3e50]/20 hover:bg-[#2c3e50]/40"
+                }`}
+              />
+           ))}
         </div>
       </div>
     </section>
