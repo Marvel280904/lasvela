@@ -88,7 +88,7 @@ export default function Footer() {
             <div className="relative">
               <form onSubmit={onSubmit}>
                 <input
-                  type="email" name="email"
+                  type="email" name="newsletter"
                   placeholder={footerData.newsletter.placeholder}
                   className="bg-transparent border-b border-gray-600 w-full py-2 px-1 font-be-vietnam text-sm outline-none focus:border-white transition-colors"
                 />
@@ -157,7 +157,7 @@ export default function Footer() {
             <div className="relative text-right">
               <form onSubmit={onSubmit}>
                 <input
-                  type="email" name="email"
+                  type="email" name="newsletter"
                   placeholder={footerData.newsletter.placeholder}
                   className="bg-transparent border-b border-gray-600 w-full py-1 font-be-vietnam text-[11px] outline-none focus:border-white transition-colors text-right"
                 />
@@ -195,11 +195,11 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col lg:flex-row items-center justify-between space-y-6 lg:space-y-0 text-[10px] md:text-sm font-be-vietnam text-gray-400 text-center lg:text-left pt-6 lg:border-t border-white/20">
-            <p>© Copyright {currentYear}. Essen. All Rights Reserved.</p>
-            <div className="flex space-x-8 tracking-widest">
-                <Link href="/terms" className="hover:text-white transition-colors">Terms of service</Link>
-                <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            </div>
+          <p>© Copyright {currentYear}. Essen. All Rights Reserved.</p>
+          <div className="flex space-x-8 tracking-widest">
+            <Link href="/terms" className="hover:text-white transition-colors">Terms of service</Link>
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+          </div>
         </div>
       </div>
     </footer>
