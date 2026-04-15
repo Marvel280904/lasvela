@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState, FormEvent } from 'react';
 import { motion, Variants } from "framer-motion";
-import { Phone, Mail, MapPin, ChevronRight, Smartphone, Car, TrainFront, Bus } from "lucide-react";
+import { Mail, MapPin, ChevronRight, Smartphone, Car, TrainFront, Bus } from "lucide-react";
 
 export default function Contact() {
   const containerVariants = {
@@ -36,6 +37,32 @@ export default function Contact() {
         ease: [0.33, 1, 0.68, 1] // easeOut exposure
       }
     })
+  };
+
+  const [result, setResult] = useState("");
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    setResult("Sending....");
+    const formData = new FormData(form);
+    formData.append("access_key", "f43dd254-a9cc-4a77-8caf-91b2b26902aa");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setResult("Form Submitted Successfully");
+        form.reset();
+      } else {
+        setResult("Error submitting form");
+      }
+    } catch (error) {
+      setResult("An unexpected error occurred");
+    }
   };
 
   return (
@@ -161,11 +188,11 @@ export default function Contact() {
                                 <span className="font-be-vietnam text-xs font-bold uppercase tracking-widest">Email</span>
                             </div>
                             <Link 
-                                href="mailto:enquiry@lasvela.sg" 
+                                href="mailto:hello@lasvela.sg" 
                                 target="_blank" rel="noopener noreferrer"
                                 className="block text-[#2c3e50]/70 font-be-vietnam text-sm md:text-md hover:text-[#2c3e50] transition-colors"
                             >
-                                enquiry@lasvela.sg
+                                hello@lasvela.sg
                             </Link>
                         </motion.div>
 
@@ -219,48 +246,63 @@ export default function Contact() {
                         </div>
 
                         {/* Form Fields - Static for now */}
-                        <form className="space-y-8">
+                        <form className="space-y-8" onSubmit={onSubmit}>
                             <div className="grid grid-cols-1 gap-8">
                                 <div className="space-y-2">
                                     <label className="text-sm font-be-vietnam tracking-widest font-medium text-[#2C3E50]">Full name</label>
-                                    <input type="text" className="w-full border border-gray-400 py-3 rounded-sm outline-none focus:border-[#2c3e50] transition-colors font-be-vietnam text-sm" />
+                                    <input type="text" name="fullname" className="w-full border border-gray-400 py-3 px-1 rounded-sm outline-none focus:border-[#2c3e50] transition-colors font-be-vietnam text-sm" />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-be-vietnam tracking-widest font-medium text-[#2C3E50]">Contact</label>
-                                    <input type="text" className="w-full border border-gray-400 py-3 rounded-sm outline-none focus:border-[#2c3e50] transition-colors font-be-vietnam text-sm" />
+                                    <input type="text" name="contact" className="w-full border border-gray-400 py-3 px-1 rounded-sm outline-none focus:border-[#2c3e50] transition-colors font-be-vietnam text-sm" />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-be-vietnam tracking-widest font-medium text-[#2C3E50]">Email</label>
-                                    <input type="email" className="w-full border border-gray-400 py-3 rounded-sm outline-none focus:border-[#2c3e50] transition-colors font-be-vietnam text-sm" />
+                                    <input type="email" name="email" className="w-full border border-gray-400 py-3 px-1 rounded-sm outline-none focus:border-[#2c3e50] transition-colors font-be-vietnam text-sm" />
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="space-y-2">
                                     <label className="text-sm font-be-vietnam tracking-widest font-medium text-[#2C3E50]">Reason</label>
-                                    <select className="w-full border border-gray-400 py-3 rounded-sm outline-none focus:border-[#2c3e50] transition-colors font-be-vietnam text-sm bg-transparent cursor-pointer">
-                                        <option>Select</option>
+                                    <select name="reason"  className="w-full border border-gray-400 py-3 rounded-sm outline-none focus:border-[#2c3e50] transition-colors font-be-vietnam text-sm bg-transparent cursor-pointer">
+                                        <option>General Inquiry</option>
+                                        <option>Book a Consultation</option>
+                                        <option>Feedback</option>
                                     </select>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-be-vietnam tracking-widest font-medium text-[#2C3E50]">Contact Time</label>
-                                    <select className="w-full border border-gray-400 py-3 rounded-sm outline-none focus:border-[#2c3e50] transition-colors font-be-vietnam text-sm bg-transparent cursor-pointer">
-                                        <option>Select</option>
+                                    <select name="contacttime"  className="w-full border border-gray-400 py-3 rounded-sm outline-none focus:border-[#2c3e50] transition-colors font-be-vietnam text-sm bg-transparent cursor-pointer">
+                                        <option>Morning (11 AM - 1 PM)</option>
+                                        <option>Afternoon (1 PM - 5 PM)</option>
+                                        <option>Evening (5 PM - 7 PM)</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div className="space-y-2 pt-4">
                                 <label className="text-sm font-be-vietnam tracking-widest font-medium text-[#2C3E50]">Message</label>
-                                <textarea rows={4} className="w-full border border-gray-400 p-4 rounded-sm outline-none focus:border-[#2c3e50] transition-colors font-be-vietnam text-sm resize-none" />
+                                <textarea rows={4} name="message" className="w-full border border-gray-400 py-4 px-1 rounded-sm outline-none focus:border-[#2c3e50] transition-colors font-be-vietnam text-sm resize-none" />
                             </div>
 
                             <div className="flex justify-end pt-8">
-                                <button type="button" className="bg-[#2c3e50] text-white px-10 py-4 rounded-full font-michroma text-[11px] md:text-xs font-bold uppercase tracking-widest flex items-center gap-3 hover:bg-[#1a252f] transition-all duration-300">
+                                <button type="submit" className="bg-[#2c3e50] text-white px-10 py-4 rounded-full font-michroma text-[11px] md:text-xs font-bold uppercase tracking-widest flex items-center gap-3 hover:bg-[#1a252f] transition-all duration-300">
                                     <ChevronRight className="w-4 h-4" />
                                     Send a message
                                 </button>
                             </div>
+                            {result && (
+                                <div className={`w-full text-center text-sm rounded-xl p-4 font-be-vietnam tracking-widest font-medium text-white shadow-sm transition-all duration-300 ${
+                                    result === "Sending...." 
+                                    ? "bg-blue-500/90" 
+                                    : result === "Form Submitted Successfully" 
+                                    ? "bg-green-600/90" 
+                                    : "bg-red-500/90"
+                                }`}>
+                                    {result}
+                                </div>
+                            )}
                         </form>
                     </div>
                 </motion.div>

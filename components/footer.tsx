@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState, FormEvent } from 'react';
 
 const footerData = {
   showroom: {
@@ -19,12 +20,39 @@ const footerData = {
   contact: {
     whatsapp: "+65 6019 0775",
     whatsappHref: "https://wa.me/6560190775?text=Hi%20Las%20Vela!%20I%20would%20like%20to%20know%20is%20there%20any%20promos?",
-    email: "enquiry@essen.sg",
+    email: "hello@lasvela.sg",
   },
 };
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+
+  const [result, setResult] = useState("");
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    setResult("Sending....");
+    const formData = new FormData(form);
+    formData.append("access_key", "f43dd254-a9cc-4a77-8caf-91b2b26902aa");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setResult("Form Submitted Successfully");
+        form.reset();
+      } else {
+        setResult("Error submitting form");
+      }
+    } catch (error) {
+      setResult("An unexpected error occurred");
+    }
+  };
+
   return (
     <footer className="bg-[#1a252f] text-white pt-24 pb-12 px-6 md:px-12 xl:px-24">
       <div className="max-w-8xl mx-auto">
@@ -58,12 +86,15 @@ export default function Footer() {
           <div className="space-y-6">
             <h4 className="text-lg font-michroma font-bold tracking-wider">Newsletter</h4>
             <div className="relative">
-              <input
-                type="email"
-                placeholder={footerData.newsletter.placeholder}
-                className="bg-transparent border-b border-gray-600 w-full py-2 font-be-vietnam text-sm outline-none focus:border-white transition-colors"
-              />
+              <form onSubmit={onSubmit}>
+                <input
+                  type="email" name="email"
+                  placeholder={footerData.newsletter.placeholder}
+                  className="bg-transparent border-b border-gray-600 w-full py-2 px-1 font-be-vietnam text-sm outline-none focus:border-white transition-colors"
+                />
+              </form>
             </div>
+            <p className="text-sm font-be-vietnam text-gray-400">{result}</p>
           </div>
 
           {/* Connect Column */}
@@ -124,11 +155,13 @@ export default function Footer() {
           <div className="grid grid-cols-2 items-center gap-4 py-8 border-b border-white/50">
             <h4 className="text-[10px] font-michroma font-bold tracking-widest uppercase text-left opacity-80">Newsletter</h4>
             <div className="relative text-right">
-              <input
-                type="email"
-                placeholder={footerData.newsletter.placeholder}
-                className="bg-transparent border-b border-gray-600 w-full py-1 font-be-vietnam text-[11px] outline-none focus:border-white transition-colors text-right"
-              />
+              <form onSubmit={onSubmit}>
+                <input
+                  type="email" name="email"
+                  placeholder={footerData.newsletter.placeholder}
+                  className="bg-transparent border-b border-gray-600 w-full py-1 font-be-vietnam text-[11px] outline-none focus:border-white transition-colors text-right"
+                />
+              </form>
             </div>
           </div>
 
