@@ -162,6 +162,7 @@ export default function Footer() {
                   className="bg-transparent border-b border-gray-600 w-full py-1 font-be-vietnam text-[11px] outline-none focus:border-white transition-colors text-right"
                 />
               </form>
+              <p className="text-[11px] pt-2 font-be-vietnam text-gray-400">{result}</p>
             </div>
           </div>
 
