@@ -26,33 +26,6 @@ const footerData = {
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-
-  const [result, setResult] = useState("");
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    setResult("Sending....");
-    const formData = new FormData(form);
-    formData.append("access_key", "f43dd254-a9cc-4a77-8caf-91b2b26902aa");
-
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        setResult("Form Submitted Successfully");
-        form.reset();
-      } else {
-        setResult("Error submitting form");
-      }
-    } catch (error) {
-      setResult("An unexpected error occurred");
-    }
-  };
-
   return (
     <footer className="bg-[#1a252f] text-white pt-24 pb-12 px-6 md:px-12 xl:px-24">
       <div className="max-w-8xl mx-auto">
@@ -73,6 +46,8 @@ export default function Footer() {
             </Link>
           </div>
 
+          <div className="space-y-6"></div>
+          
           {/* Showroom Column */}
           <div className="space-y-6">
             <h4 className="text-lg font-michroma font-bold tracking-wider">Showroom</h4>
@@ -82,7 +57,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Newsletter Column */}
+          {/* Newsletter Column 
           <div className="space-y-6">
             <h4 className="text-lg font-michroma font-bold tracking-wider">Newsletter</h4>
             <div className="relative">
@@ -95,7 +70,7 @@ export default function Footer() {
               </form>
             </div>
             <p className="text-sm font-be-vietnam text-gray-400">{result}</p>
-          </div>
+          </div>*/}
 
           {/* Connect Column */}
           <div className="space-y-6">
@@ -151,7 +126,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Mobile Newsletter */}
+          {/* Mobile Newsletter 
           <div className="grid grid-cols-2 items-center gap-4 py-8 border-b border-white/50">
             <h4 className="text-[10px] font-michroma font-bold tracking-widest uppercase text-left opacity-80">Newsletter</h4>
             <div className="relative text-right">
@@ -164,7 +139,7 @@ export default function Footer() {
               </form>
               <p className="text-[11px] pt-2 font-be-vietnam text-gray-400">{result}</p>
             </div>
-          </div>
+          </div>*/}
 
           {/* Mobile Connect */}
           <div className="grid grid-cols-2 items-start gap-4 py-8 border-b border-white/50">
