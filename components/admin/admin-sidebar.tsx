@@ -10,6 +10,7 @@ import {
   Users,
   Activity,
   Package,
+  Newspaper,
   Settings
 } from "lucide-react"
 
@@ -47,6 +48,12 @@ export function AdminSidebar({ userRole }: AdminSidebarProps) {
       href: "/admin/users",
       icon: Users,
       allowed: isAdmin
+    },
+    {
+      label: "Articles",
+      href: "/admin/articles",
+      icon: Newspaper,
+      allowed: true
     },
     {
       label: "Activity Logs",
