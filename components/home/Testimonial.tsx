@@ -8,57 +8,57 @@ import { UserCircle, ArrowLeft, ArrowRight } from "lucide-react";
 const testimonials = [
   {
     id: 1,
-    name: "SARAH JENKINS",
-    tagline: "Interior Designer",
-    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    name: "Eric Tan",
+    tagline: "Customer",
+    body: "We had a great experience with Mr Nick. His recommendations were spot-on, and the furniture quality is excellent and beautiful. He is very helpful, knowledgeable, and always quick to respond to our questions. Truly appreciate his professionalism and dedication. Highly recommended!",
   },
   {
     id: 2,
-    name: "MICHAEL CHEN",
-    tagline: "Homeowner",
-    body: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.",
+    name: "Yokemui Tong",
+    tagline: "Customer",
+    body: "I have been looking for vanity set for my bathroom after HIP for the past few weeks. This set of vanity fulfill my requirement for the rounded corner and the price is very reasonable. The sale rep and manager are very polite and patient. The manager is very professional and answer my questions and do recommendations based on my need and no hard selling feeling throughout. Very happy with my purchases including lamp and taps also. Will definitely recommend Essen to my friends.",
   },
   {
     id: 3,
-    name: "EMMA ROBERTS",
-    tagline: "Architect",
-    body: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.",
+    name: "CT",
+    tagline: "Customer",
+    body: "RECOMMENDED!! Great service from Nick, who was friendly and attentive. I purchased two vanity sets at a reasonable price, and there was no hard selling throughout the process. The installation appointment was arranged promptly after the purchase, and Nick also followed up afterward to check on the installation condition. The installation team was professional as well. Overall, it was a very satisfying experience.",
   },
   {
     id: 4,
-    name: "DAVID WILSON",
-    tagline: "Real Estate Agent",
-    body: "Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe.",
+    name: "Yu Xuan Tan",
+    tagline: "Customer",
+    body: "Came to spend our climate vouchers on shower fittings and it was a successful trip. Nick was very patient, wasn’t pushy and very helpful in explaining the different features. There’s also a live area that shows you how the shower fittings work with water. Would recommend!",
   },
   {
     id: 5,
-    name: "OLIVIA TAYLOR",
-    tagline: "Business Owner",
-    body: "Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.",
+    name: "Navanita A",
+    tagline: "Customer",
+    body: "Excellent service from the moment I stepped into the showroom to delivery of items. Nick is a master salesman - honest, informative and not pushy. Good range of bathroom items and ceiling fans at reasonable prices. I recommend them highly.",
   },
   {
     id: 6,
-    name: "JAMES ANDERSON",
-    tagline: "Photographer",
-    body: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words.",
+    name: "Siti Zulaikha",
+    tagline: "Customer",
+    body: "We happened to come across the company on social media and decided to drop by. We ended up purchasing a few items for our home. The customer service was extremely friendly, and I highly recommend them.",
   },
   {
     id: 7,
-    name: "SOPHIA MARTINEZ",
-    tagline: "Art Director",
-    body: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure.",
+    name: "Estelle Soh",
+    tagline: "Customer",
+    body: "I was served by Suki for my bathroom essentials. She was very patient and kind to me, offering advices and alternatives that catered to my wants and needs. The whole experience honestly was comfortable and not pushy. I could take my time and decide and she showed no ounce of impatience with me and my child. Thank you Suki and your team, really appreciate the support and kindness shown to us.",
   },
   {
     id: 8,
-    name: "WILLIAM GARCIA",
-    tagline: "Hospitality Executive",
-    body: "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from 'de Finibus Bonorum et Malorum' by Cicero are also reproduced in their exact original form, accompanied by English versions by H. Rackham.",
+    name: "Nurafidah Kamsani",
+    tagline: "Customer",
+    body: "Kris was very helpful and patient. He clarified all our doubts and even climbed up a chair to demonstrate how to do the upkeep. This is not our first time here and will keep coming back!",
   },
   {
     id: 9,
-    name: "ISABELLA LEE",
-    tagline: "Lifestyle Blogger",
-    body: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here'.",
+    name: "Dennis Yeo",
+    tagline: "Customer",
+    body: "They have a wide range of products and the staff Suki was very patient and friendly offered great service to us with regards to the style of dining table we wanted",
   },
 ];
 
@@ -109,7 +109,7 @@ export default function Testimonial() {
     
     const interval = setInterval(() => {
       scroll("right");
-    }, 5000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [isPaused, activeIndex]);
@@ -150,10 +150,10 @@ export default function Testimonial() {
             {testimonials.map((item, idx) => (
               <motion.div
                 key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.05 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ duration: 1 }}
                 className="flex-shrink-0 w-[82%] md:w-[48%] lg:w-[32%] snap-center md:snap-start"
               >
                 <div className="bg-white rounded-xl p-8 lg:p-6 xl:p-12 h-full border border-[#2c3e50]/5 shadow-sm hover:shadow-2xl transition-all duration-700 flex flex-col space-y-10 min-h-[400px]">
