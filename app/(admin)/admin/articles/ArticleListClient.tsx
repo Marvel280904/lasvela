@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
-import { Clock, ArrowRight, Search } from "lucide-react"
+import { Clock, ArrowRight, Search, ChevronLeft, ChevronRight } from "lucide-react"
 import { AddArticleDialog } from "@/components/add-article-dialog"
 
 interface Article {
@@ -26,9 +26,17 @@ interface ArticleListClientProps {
 
 export function ArticleListClient({ articles }: ArticleListClientProps) {
   const [searchTerm, setSearchTerm] = useState("")
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 9
 
   const filteredArticles = articles.filter(article => 
     article.title.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
+  const totalPages = Math.ceil(filteredArticles.length / itemsPerPage)
+  const currentArticles = filteredArticles.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
   )
 
   return (
@@ -43,7 +51,10 @@ export function ArticleListClient({ articles }: ArticleListClientProps) {
               placeholder="Search by title..."
               className="pl-9"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value)
+                setCurrentPage(1)
+              }}
             />
           </div>
           <AddArticleDialog />
@@ -58,7 +69,7 @@ export function ArticleListClient({ articles }: ArticleListClientProps) {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredArticles.map((article) => (
+          {currentArticles.map((article) => (
              <div 
                key={article.id} 
                className="border border-gray-200 bg-[#FAF9F6] rounded-[2px] overflow-hidden flex flex-col shadow-sm"
@@ -110,6 +121,40 @@ export function ArticleListClient({ articles }: ArticleListClientProps) {
                </div>
              </div>
           ))}
+        </div>
+      )}
+
+      {totalPages > 1 && filteredArticles.length > 0 && (
+        <div className="flex justify-center items-center space-x-2 mt-8">
+          <button 
+            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+            className="w-9 h-9 flex items-center justify-center rounded-md disabled:opacity-50 border border-gray-300 text-gray-400 hover:text-[#2C3E50] hover:bg-white transition-colors cursor-pointer disabled:cursor-not-allowed"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+              key={page}
+              onClick={() => setCurrentPage(page)}
+              className={`w-9 h-9 flex items-center justify-center rounded px-3 text-[15px] font-medium transition-all ${
+                currentPage === page 
+                  ? 'bg-[#2C3E50] text-white shadow-md' 
+                  : 'bg-transparent border border-gray-300 text-gray-600 hover:bg-white hover:border-[#324558]/30'
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+
+          <button 
+            onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+            className="w-9 h-9 flex items-center justify-center rounded-md disabled:opacity-50 border border-gray-300 text-gray-400 hover:text-[#2C3E50] hover:bg-white transition-colors cursor-pointer disabled:cursor-not-allowed"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
         </div>
       )}
     </div>

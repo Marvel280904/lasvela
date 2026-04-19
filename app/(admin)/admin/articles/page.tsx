@@ -29,7 +29,7 @@ export default async function ArticlesPage() {
   let articles: Article[] = []
 
   try {
-    const response = await apiClient.get("/api/articles/admin", {
+    const response = await apiClient.get("/api/articles/admin?limit=100", {
       headers: {
         Authorization: `Bearer ${token}`
       }

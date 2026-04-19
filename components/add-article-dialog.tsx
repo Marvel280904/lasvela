@@ -10,10 +10,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { useRouter } from "next/navigation"
 import { ArticleForm } from "@/components/article-form"
 
 export function AddArticleDialog() {
   const [open, setOpen] = useState(false)
+  const router = useRouter()
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -27,7 +29,10 @@ export function AddArticleDialog() {
         <DialogHeader>
           <DialogTitle>Add New Article</DialogTitle>
         </DialogHeader>
-        <ArticleForm onSuccess={() => setOpen(false)} />
+        <ArticleForm onSuccess={() => {
+          setOpen(false)
+          router.refresh()
+        }} />
       </DialogContent>
     </Dialog>
   )
