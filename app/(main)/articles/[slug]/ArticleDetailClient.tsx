@@ -173,7 +173,7 @@ export default function ArticleDetailClient({ article, latestArticles }: Article
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="prose prose-lg mx-auto text-[#2C3E50] font-be-vietnam leading-[1.8] mb-24"
+          className="prose prose-lg max-w-none text-[#2C3E50] font-be-vietnam leading-[1.8] mb-24"
         >
           <div 
             dangerouslySetInnerHTML={{ __html: article.content }} 

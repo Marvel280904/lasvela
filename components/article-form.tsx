@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -14,6 +14,7 @@ import { Switch } from "@/components/ui/switch"
 import { toast } from "sonner"
 import apiClient from "@/lib/axiosClient"
 import { X } from "lucide-react"
+import { RichTextEditor } from "@/components/ui/rich-text-editor"
 
 const articleFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -229,11 +230,16 @@ export function ArticleForm({ initialData, isEditing = false, onSuccess }: Artic
           {/* Content */}
           <div className="space-y-2">
             <Label htmlFor="content">Content</Label>
-            <Textarea 
-              id="content" 
-              className="min-h-[200px]" 
-              {...form.register("content")} 
-              placeholder="<h2>Introduction</h2><p>Article content goes here...</p>" 
+            <Controller
+              name="content"
+              control={form.control}
+              render={({ field }) => (
+                <RichTextEditor 
+                  value={field.value} 
+                  onChange={field.onChange} 
+                  placeholder="Start writing your article..." 
+                />
+              )}
             />
             {form.formState.errors.content && (
               <p className="text-sm text-red-500">{form.formState.errors.content.message}</p>
