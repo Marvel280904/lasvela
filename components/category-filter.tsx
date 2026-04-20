@@ -2,13 +2,25 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Loader2 } from "lucide-react";
+import { 
+  X, 
+  Loader2, 
+  ChevronDown, 
+  ChevronRight
+} from "lucide-react";
 import apiClient from "@/lib/axiosClient";
 
-interface Category {
+interface ChildCategory {
   id: string;
   name: string;
   slug: string;
+}
+
+interface ParentCategory {
+  id: string;
+  name: string;
+  slug: string;
+  children: ChildCategory[];
 }
 
 interface CategoryFilterProps {
@@ -19,9 +31,16 @@ interface CategoryFilterProps {
 }
 
 export function CategoryFilter({ isOpen, onClose, selectedCategories, onApply }: CategoryFilterProps) {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [parentCategories, setParentCategories] = useState<ParentCategory[]>([]);
   const [localSelected, setLocalSelected] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [expandedRooms, setExpandedRooms] = useState<string[]>([]);
+
+  const toggleRoom = (roomId: string) => {
+    setExpandedRooms(prev => 
+      prev.includes(roomId) ? prev.filter(id => id !== roomId) : [...prev, roomId]
+    );
+  };
 
   // Sync state whenever sidebar is opened
   useEffect(() => {
@@ -38,24 +57,29 @@ export function CategoryFilter({ isOpen, onClose, selectedCategories, onApply }:
     };
   }, [isOpen, selectedCategories]);
 
-  // Fetch categories from API
+  // Fetch categories from API tree
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        const response = await apiClient.get('/api/categories');
+        const response = await apiClient.get('/api/parent-categories/tree');
         if (response.data?.success && Array.isArray(response.data.data)) {
-           setCategories(response.data.data);
+           const treeData = response.data.data;
+           setParentCategories(treeData);
+           // Expand all by default initially
+           setExpandedRooms(treeData.map((p: ParentCategory) => p.id));
         }
       } catch (error) {
-        console.error("Failed to fetch categories:", error);
+        console.error("Failed to fetch tree categories:", error);
       } finally {
         setLoading(false);
       }
     };
     
-    fetchCategories();
-  }, []);
+    if (isOpen) {
+        fetchCategories();
+    }
+  }, [isOpen]);
 
   const toggleCategory = (categoryName: string) => {
     setLocalSelected(prev => {
@@ -96,7 +120,7 @@ export function CategoryFilter({ isOpen, onClose, selectedCategories, onApply }:
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-y-0 right-0 w-80 sm:w-96 bg-white shadow-2xl z-50 flex flex-col"
+            className="fixed inset-y-0 right-0 w-80 sm:w-120 bg-white shadow-2xl z-50 flex flex-col"
           >
             {/* Header & Close Button */}
             <div className="px-6 py-4 flex items-center justify-between border-b border-gray-100">
@@ -116,33 +140,74 @@ export function CategoryFilter({ isOpen, onClose, selectedCategories, onApply }:
                   <Loader2 className="w-8 h-8 animate-spin text-[#2C3E50]/50" />
                   <p className="text-sm font-be-vietnam text-gray-400">Loading categories...</p>
                 </div>
-              ) : categories.length === 0 ? (
+              ) : parentCategories.length === 0 ? (
                 <div className="text-center py-10">
                   <p className="text-sm font-be-vietnam text-gray-500">No categories found</p>
                 </div>
               ) : (
-                <div className="space-y-3">
-                  <p className="text-sm text-gray-400 font-be-vietnam mb-4">Select all applicable categories:</p>
-                  <div className="flex flex-wrap gap-2">
-                    {categories.map((cat) => {
-                      const isSelected = localSelected.includes(cat.name);
-                      return (
-                        <button
-                          key={cat.id}
-                          onClick={() => toggleCategory(cat.name)}
-                          className={`
-                            px-4 py-2 border rounded-full text-xs font-be-vietnam tracking-wide transition-all duration-200
-                            ${isSelected 
-                              ? 'bg-[#2C3E50] border-[#2C3E50] text-[#F8F5EA] shadow-md' 
-                              : 'bg-transparent border-gray-300 text-gray-600 hover:border-[#2C3E50] hover:text-[#2C3E50]'
-                            }
-                          `}
+                <div className="space-y-8">
+                  {parentCategories.map((parent) => {
+                    const isExpanded = expandedRooms.includes(parent.id);
+                    
+                    return (
+                      <div key={parent.id} className="space-y-4">
+                        {/* Parent Header */}
+                        <div 
+                          onClick={() => toggleRoom(parent.id)}
+                          className="flex items-center justify-between cursor-pointer group border-b border-gray-100 pb-3"
                         >
-                          {cat.name}
-                        </button>
-                      );
-                    })}
-                  </div>
+                          <div className="flex items-center gap-3 text-[#2C3E50]">
+                            <h3 className="text-lg md:text-xl font-michroma tracking-tight uppercase">
+                              {parent.name}
+                            </h3>
+                          </div>
+                          <motion.div
+                            animate={{ rotate: isExpanded ? 180 : 0 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            <ChevronDown size={20} className="text-gray-400" />
+                          </motion.div>
+                        </div>
+
+                        {/* Children Categories */}
+                        <AnimatePresence initial={false}>
+                          {isExpanded && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.3, ease: "easeInOut" }}
+                              className="overflow-hidden"
+                            >
+                              <div className="flex flex-wrap gap-2.5 pt-1 pb-2">
+                                {parent.children.map((child) => {
+                                  const isSelected = localSelected.includes(child.name);
+                                  return (
+                                    <button
+                                      key={child.id}
+                                      onClick={() => toggleCategory(child.name)}
+                                      className={`
+                                        px-5 py-2.5 border rounded text-xs font-be-vietnam uppercase tracking-widest transition-all duration-300
+                                        ${isSelected 
+                                          ? 'bg-[#2C3E50] border-[#2C3E50] text-[#F8F5EA] shadow-lg scale-[1.02]' 
+                                          : 'bg-white border-gray-200 text-gray-600 hover:border-[#2C3E50] hover:text-[#2C3E50] hover:shadow-sm'
+                                        }
+                                      `}
+                                    >
+                                      {child.name}
+                                    </button>
+                                  );
+                                })}
+                                {parent.children.length === 0 && (
+                                  <p className="text-xs text-gray-400 italic font-be-vietnam">No sub-categories available</p>
+                                )}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>

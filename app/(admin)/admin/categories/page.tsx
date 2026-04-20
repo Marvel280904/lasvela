@@ -8,37 +8,47 @@ interface Category {
   id: string
   name: string
   slug: string
+  parentId?: string | null
+  parentName?: string | null
 }
+
 
 export const dynamic = "force-dynamic";
 
 export default async function CategoriesPage() {
   let categories: Category[] = [];
+  let parentCategories: { id: string, name: string }[] = [];
 
   try {
-    const response = await apiClient.get("/api/categories");
+    const [catResponse, parentResponse] = await Promise.all([
+      apiClient.get("/api/categories"),
+      apiClient.get("/api/parent-categories")
+    ]);
     
-    // DEBUGGING: Cek di terminal server (bukan browser console) apa outputnya
-    console.log("Full API Response Data:", JSON.stringify(response.data, null, 2));
+    // Parse Categories
+    if (Array.isArray(catResponse.data)) {
+      categories = catResponse.data;
+    } else if (catResponse.data && Array.isArray(catResponse.data.data)) {
+      categories = catResponse.data.data;
+    } 
 
-    // Cek apakah response.data adalah Array?
-    if (Array.isArray(response.data)) {
-      categories = response.data;
-    } 
-    // Cek apakah response.data memiliki properti 'data' yang berisi Array?
-    else if (response.data && Array.isArray(response.data.data)) {
-      categories = response.data.data;
-    } 
-    // Jika format lain, biarkan array kosong dan log error
-    else {
-      console.error("Struktur response API tidak dikenali (bukan array).");
+    // Parse Parent Categories
+    if (Array.isArray(parentResponse.data)) {
+      parentCategories = parentResponse.data;
+    } else if (parentResponse.data && Array.isArray(parentResponse.data.data)) {
+      parentCategories = parentResponse.data.data;
     }
+
+    // Map parentId to parentName
+    categories = categories.map(category => ({
+      ...category,
+      parentName: parentCategories.find(p => p.id === category.parentId)?.name || null
+    }));
     
-    console.log(`Successfully parsed ${categories.length} categories.`);
+    console.log(`Successfully parsed ${categories.length} categories with parent names.`);
 
   } catch (error) {
-    console.error("Error loading categories:", error);
-    // categories tetap [] (array kosong) agar tidak crash saat .map
+    console.error("Error loading categories or parents:", error);
   }
 
   return (
@@ -60,6 +70,7 @@ export default async function CategoriesPage() {
               <tr className="bg-gray-50 border-b">
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Parent Room</th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
@@ -79,6 +90,9 @@ export default async function CategoriesPage() {
                   <tr key={category.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{category.name}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{category.slug}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {category.parentName || <span className="text-gray-300 italic">None</span>}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <Button asChild variant="ghost" size="sm">
                         <Link href={`/admin/categories/${category.id}`}>Edit</Link>

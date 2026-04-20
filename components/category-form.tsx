@@ -9,6 +9,13 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select"
 import { toast } from "sonner"
 import apiClient from "@/lib/axiosClient"
 // import { deleteCategory } from "@/app/actions/category-actions"
@@ -27,6 +34,7 @@ const categoryFormSchema = z.object({
 interface CategoryFormData {
   name: string
   slug: string
+  parentId?: string | null
   id?: string
 }
 
@@ -40,6 +48,24 @@ export function CategoryForm({ initialData, isEditing = false }: CategoryFormPro
   const [isDeleting, setIsDeleting] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
+  const [parentCategories, setParentCategories] = useState<{ id: string, name: string }[]>([])
+
+  useEffect(() => {
+    const fetchParentCategories = async () => {
+      try {
+        const response = await apiClient.get("/api/parent-categories")
+        if (response.data && response.data.success && Array.isArray(response.data.data)) {
+          setParentCategories(response.data.data)
+        } else if (Array.isArray(response.data)) {
+          setParentCategories(response.data)
+        }
+      } catch (error) {
+        console.error("Error fetching parent categories:", error)
+      }
+    }
+
+    fetchParentCategories()
+  }, [])
 
   useEffect(() => {
     console.log("CategoryForm initialData:", initialData)
@@ -50,6 +76,7 @@ export function CategoryForm({ initialData, isEditing = false }: CategoryFormPro
     defaultValues: {
       name: initialData?.name || "",
       slug: initialData?.slug || "",
+      parentId: initialData?.parentId || null,
     },
   })
 
@@ -67,6 +94,7 @@ export function CategoryForm({ initialData, isEditing = false }: CategoryFormPro
         const payload = {
           name: data.name,
           slug: data.slug,
+          parentId: data.parentId || null,
         }
 
         console.log("Sending UPDATE payload to /api/categories/admin/{id}:", payload)
@@ -92,6 +120,7 @@ export function CategoryForm({ initialData, isEditing = false }: CategoryFormPro
         const payload = {
           name: data.name,
           slug: data.slug,
+          parentId: data.parentId || null,
         }
 
         console.log("Sending CREATE payload to /api/categories/admin:", payload)
@@ -234,6 +263,25 @@ export function CategoryForm({ initialData, isEditing = false }: CategoryFormPro
               {form.formState.errors.slug && (
                 <p className="text-sm text-red-500">{form.formState.errors.slug.message}</p>
               )}
+            </div>
+
+             <div className="space-y-2">
+              <Label htmlFor="parentId">Parent Room</Label>
+              <Select 
+                onValueChange={(value) => form.setValue("parentId", value === "none" ? null : value)}
+                defaultValue={initialData?.parentId || undefined}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a room" />
+                </SelectTrigger>
+                <SelectContent>
+                  {parentCategories.map((room) => (
+                    <SelectItem key={room.id} value={room.id}>
+                      {room.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </CardContent>

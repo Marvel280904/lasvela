@@ -11,6 +11,7 @@ import {
   Activity,
   Package,
   Newspaper,
+  House,
   Settings
 } from "lucide-react"
 
@@ -41,6 +42,12 @@ export function AdminSidebar({ userRole }: AdminSidebarProps) {
       label: "Categories",
       href: "/admin/categories",
       icon: FolderTree,
+      allowed: true
+    },
+    {
+      label: "Rooms",
+      href: "/admin/rooms",
+      icon: House,
       allowed: true
     },
     {
