@@ -14,6 +14,7 @@ interface ArticleResponse {
     metaTitle: string;
     metaDescription: string;
     thumbnailImage: string;
+    images?: string[];
     author: string;
     publishedAt: string;
     tags: string[];
@@ -40,6 +41,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     const article = response.data;
 
+    const ogImage = (article.images && article.images.length > 0) 
+      ? article.images[0] 
+      : article.thumbnailImage;
+
     return {
       title: article.metaTitle || `${article.title} | Lasvela`,
       description: article.metaDescription || article.excerpt,
@@ -48,7 +53,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         description: article.metaDescription || article.excerpt,
         images: [
           {
-            url: article.thumbnailImage,
+            url: ogImage,
             width: 1200,
             height: 630,
             alt: article.title,
@@ -62,7 +67,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         card: "summary_large_image",
         title: article.metaTitle || article.title,
         description: article.metaDescription || article.excerpt,
-        images: [article.thumbnailImage],
+        images: [ogImage],
       },
     };
   } catch (error) {

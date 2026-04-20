@@ -65,6 +65,16 @@ export function ArticleForm({ initialData, isEditing = false, onSuccess }: Artic
     },
   })
 
+  const extractImagesFromHtml = (html: string) => {
+    const imgRegex = /<img[^>]+src="([^">]+)"/g;
+    const images = [];
+    let match;
+    while ((match = imgRegex.exec(html)) !== null) {
+      images.push(match[1]);
+    }
+    return images;
+  };
+
   const onSubmit = async (data: ArticleFormData) => {
     setIsSubmitting(true)
     setFormError(null)
@@ -72,7 +82,8 @@ export function ArticleForm({ initialData, isEditing = false, onSuccess }: Artic
     try {
       const payload = {
         ...data,
-        thumbnailImage: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+        images: extractImagesFromHtml(data.content),
+        thumbnailImage: data.thumbnailImage || "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
       }
 
       let response

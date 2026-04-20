@@ -5,6 +5,10 @@ import StarterKit from "@tiptap/starter-kit"
 import Underline from "@tiptap/extension-underline"
 import TextAlign from "@tiptap/extension-text-align"
 import Link from "@tiptap/extension-link"
+import Image from "@tiptap/extension-image"
+import { useRef } from "react"
+import apiClient from "@/lib/axiosClient"
+import { toast } from "sonner"
 import { 
   Bold, 
   Italic, 
@@ -23,7 +27,8 @@ import {
   AlignJustify, 
   AlignLeft, 
   AlignRight,
-  Link as LinkIcon
+  Link as LinkIcon,
+  ImagePlus
 } from "lucide-react"
 import { Button } from "./button"
 import { cn } from "@/lib/utils"
@@ -37,6 +42,50 @@ interface RichTextEditorProps {
 const MenuBar = ({ editor }: { editor: any }) => {
   if (!editor) {
     return null
+  }
+
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    // Validate if it's an image
+    if (!file.type.startsWith('image/')) {
+        toast.error("Invalid file type", { description: "Please select an image file." })
+        return
+    }
+
+    const formData = new FormData()
+    formData.append("file", file)
+
+    const toastId = toast.loading("Uploading image...")
+
+    try {
+      const response = await apiClient.post("/api/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+
+      if (response.data.success) {
+        const imageUrl = response.data.data.imageUrl
+        editor.chain().focus().setImage({ src: imageUrl }).run()
+        toast.success("Image uploaded successfully", { id: toastId })
+      } else {
+        throw new Error(response.data.message || "Upload failed")
+      }
+    } catch (error: any) {
+      console.error("Image upload error:", error)
+      toast.error("Upload failed", { 
+        id: toastId,
+        description: error.response?.data?.message || error.message || "Failed to upload image" 
+      })
+    } finally {
+        if (fileInputRef.current) {
+            fileInputRef.current.value = ""
+        }
+    }
   }
 
   const addLink = () => {
@@ -219,6 +268,23 @@ const MenuBar = ({ editor }: { editor: any }) => {
         <LinkIcon className="h-4 w-4" />
       </Button>
 
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        onClick={() => fileInputRef.current?.click()}
+        className="h-8 w-8 p-0"
+      >
+        <ImagePlus className="h-4 w-4" />
+      </Button>
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleImageUpload}
+        accept="image/*"
+        className="hidden"
+      />
+
       <div className="flex-grow" />
 
       <Button
@@ -257,15 +323,22 @@ export const RichTextEditor = ({ value, onChange, placeholder }: RichTextEditorP
           keepMarks: true,
           keepAttributes: false,
         },
+        link: false,
+        underline: false,
       }),
       Underline,
       TextAlign.configure({
-        types: ['heading', 'paragraph'],
+        types: ['heading', 'paragraph', 'image'],
       }),
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
           class: 'text-blue-600 underline cursor-pointer',
+        },
+      }),
+      Image.configure({
+        HTMLAttributes: {
+          class: 'rounded-lg border shadow-sm max-w-full h-auto my-4',
         },
       }),
     ],
@@ -308,6 +381,22 @@ export const RichTextEditor = ({ value, onChange, placeholder }: RichTextEditorP
         .ProseMirror h4 { font-size: 1.1rem; font-weight: bold; margin-bottom: 0.5rem; }
         .ProseMirror ul { list-style-type: disc; padding-left: 1.5rem; }
         .ProseMirror ol { list-style-type: decimal; padding-left: 1.5rem; }
+        
+        .ProseMirror img[style*="text-align: center"] {
+          margin-left: auto !important;
+          margin-right: auto !important;
+          display: block !important;
+        }
+        .ProseMirror img[style*="text-align: right"] {
+          margin-left: auto !important;
+          margin-right: 0 !important;
+          display: block !important;
+        }
+        .ProseMirror img[style*="text-align: left"] {
+          margin-left: 0 !important;
+          margin-right: auto !important;
+          display: block !important;
+        }
       `}</style>
     </div>
   )

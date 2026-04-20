@@ -13,6 +13,7 @@ interface Article {
   content: string;
   excerpt: string;
   thumbnailImage: string;
+  images?: string[] | null;
   tags: string[];
   updatedAt: string;
   publishedAt: string;
@@ -109,6 +110,13 @@ export default function ArticlesPage() {
      return article.content.replace(/<[^>]+>/g, '').substring(0, 100) + '...';
   };
 
+  const getDisplayImage = (article: Article) => {
+    if (article.images && article.images.length > 0) {
+      return article.images[0];
+    }
+    return article.thumbnailImage || '/placeholder.jpg';
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#FCF9EE] flex items-center justify-center">
@@ -168,7 +176,7 @@ export default function ArticlesPage() {
             {/* Main Featured Article (Left) */}
             <motion.div variants={itemVariants} className="lg:col-span-6 relative h-[400px] lg:h-full rounded-lg overflow-hidden group shadow-md hover:shadow-xl transition-shadow duration-500">
               <img 
-                src={topArticles[0].thumbnailImage || '/placeholder.jpg'} 
+                src={getDisplayImage(topArticles[0])} 
                 alt={topArticles[0].title}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-[800ms] group-hover:scale-110"
               />
@@ -201,7 +209,7 @@ export default function ArticlesPage() {
                 <motion.div variants={itemVariants} key={article.id} className="flex bg-transparent overflow-hidden h-auto lg:h-[calc((480px-3rem)/3)] group rounded-xl">
                   <div className="w-[40%] md:w-[35%] lg:w-[40%] relative min-h-[140px] overflow-hidden">
                     <img 
-                      src={article.thumbnailImage || '/placeholder.jpg'} 
+                      src={getDisplayImage(article)} 
                       alt={article.title}
                       className="absolute inset-0 w-full h-full object-cover rounded-xl transition-transform duration-500 group-hover:scale-110"
                     />
@@ -252,7 +260,7 @@ export default function ArticlesPage() {
                   >
                     <div className="relative h-[220px] w-full overflow-hidden group">
                       <img 
-                        src={article.thumbnailImage || '/placeholder.jpg'} 
+                        src={getDisplayImage(article)} 
                         alt={article.title}
                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />

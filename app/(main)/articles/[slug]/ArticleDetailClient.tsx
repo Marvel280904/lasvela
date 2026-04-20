@@ -13,6 +13,7 @@ interface SimpleArticle {
   content: string;
   excerpt: string;
   thumbnailImage: string;
+  images?: string[] | null;
   author: string;
   publishedAt: string;
   updatedAt?: string;
@@ -108,6 +109,13 @@ export default function ArticleDetailClient({ article, latestArticles }: Article
     return art.content.replace(/<[^>]+>/g, '').substring(0, 100) + '...';
   };
 
+  const getDisplayImage = (art: SimpleArticle) => {
+    if (art.images && art.images.length > 0) {
+      return art.images[0];
+    }
+    return art.thumbnailImage || '/placeholderarticle.jpg';
+  };
+
   return (
     <div className="min-h-screen bg-[#FCF9EE] pt-24 md:pt-32 pb-4">
       <div className="max-w-8xl mx-auto px-6 md:px-12 xl:px-24">
@@ -154,7 +162,7 @@ export default function ArticleDetailClient({ article, latestArticles }: Article
           </div>
         </motion.div>
 
-        {/* Featured Image */}
+        {/* Featured Image 
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -162,11 +170,11 @@ export default function ArticleDetailClient({ article, latestArticles }: Article
           className="relative w-full aspect-[16/9] mb-12 rounded-xl overflow-hidden shadow-2xl"
         >
           <img 
-            src={article.thumbnailImage || '/placeholderarticle.jpg'} 
+            src={getDisplayImage(article)} 
             alt={article.title}
             className="w-full h-full object-cover"
           />
-        </motion.div>
+        </motion.div>*/}
 
         {/* Content Section */}
         <motion.div
@@ -231,7 +239,7 @@ export default function ArticleDetailClient({ article, latestArticles }: Article
                   <div className="bg-white rounded-2xl shadow-[0_4px_20px_-5px_rgba(44,62,80,0.1)] border border-gray-100 overflow-hidden flex flex-col h-full min-h-[460px] transition-all duration-300 hover:shadow-xl hover:-translate-y-2 group">
                     <div className="relative h-[220px] w-full overflow-hidden">
                       <img 
-                        src={art.thumbnailImage || '/placeholder.jpg'} 
+                        src={getDisplayImage(art)} 
                         alt={art.title}
                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
@@ -263,6 +271,23 @@ export default function ArticleDetailClient({ article, latestArticles }: Article
           </div>
         </div>
       )}
+      <style jsx global>{`
+        .article-content img[style*="text-align: center"] {
+          margin-left: auto !important;
+          margin-right: auto !important;
+          display: block !important;
+        }
+        .article-content img[style*="text-align: right"] {
+          margin-left: auto !important;
+          margin-right: 0 !important;
+          display: block !important;
+        }
+        .article-content img[style*="text-align: left"] {
+          margin-left: 0 !important;
+          margin-right: auto !important;
+          display: block !important;
+        }
+      `}</style>
     </div>
   );
 }
