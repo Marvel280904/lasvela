@@ -5,14 +5,67 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowLeft, Loader2, ChevronRight, ShoppingCart } from "lucide-react";
+import { toast } from "sonner";
 import { useCartStore } from "@/lib/store/useCartStore";
 import apiClient from "@/lib/axiosClient";
+import { processCheckoutAndPayment } from "@/lib/order-payment";
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { items: cartItems } = useCartStore();
   const [totals, setTotals] = useState<any>(null);
   const [isCalculating, setIsCalculating] = useState(true);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+
+  // Form States
+  const [customerInfo, setCustomerInfo] = useState({
+    fullName: "",
+    phone: "",
+    email: ""
+  });
+
+  const [shippingAddress, setShippingAddress] = useState({
+    addressLine1: "",
+    addressLine2: "",
+    city: "",
+    postalCode: "",
+    country: "Singapore",
+    state: ""
+  });
+
+  const [notes, setNotes] = useState("");
+
+  const handlePayment = async () => {
+    if (isProcessingPayment || isCalculating) return;
+
+    setIsProcessingPayment(true);
+    try {
+      const payload = {
+        customerEmail: customerInfo.email,
+        customerName: customerInfo.fullName,
+        items: cartItems.map(item => ({
+          productId: item.id,
+          quantity: item.quantity,
+          selectedMaterial: item.material || "",
+          selectedDimension: item.dimension || "",
+          selectedAddOnNames: item.addOns || []
+        })),
+        shippingAddress: {
+          ...shippingAddress,
+          fullName: customerInfo.fullName,
+          phone: `+65${customerInfo.phone}` // Prefix with SG code as shown in UI
+        },
+        notes: notes
+      };
+
+      await processCheckoutAndPayment(payload);
+    } catch (error: any) {
+      console.error("Gagal memproses pembayaran:", error);
+      toast.error(error.message || "There was an error processing your payment. Please try again.");
+    } finally {
+      setIsProcessingPayment(false);
+    }
+  };
 
   // CALCULATE API logic
   useEffect(() => {
@@ -121,9 +174,11 @@ export default function CheckoutPage() {
               <div className="space-y-6">
                 <div className="space-y-2">
                    <label className="text-sm font-medium font-be-vietnam text-[#2c3e50]">Full Name</label>
-                   <input 
+                    <input 
                     type="text" 
                     placeholder="Enter full name"
+                    value={customerInfo.fullName}
+                    onChange={(e) => setCustomerInfo({ ...customerInfo, fullName: e.target.value })}
                     className="w-full p-4 bg-white border border-[#2c3e50]/10 rounded-[0.5rem] focus:outline-none focus:ring-1 focus:ring-[#2c3e50]/20 font-be-vietnam text-sm"
                    />
                 </div>
@@ -137,6 +192,8 @@ export default function CheckoutPage() {
                       <input 
                         type="text" 
                         placeholder="822-1234-5678"
+                        value={customerInfo.phone}
+                        onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
                         className="w-full p-4 bg-white border border-[#2c3e50]/10 rounded-r-[0.5rem] focus:outline-none focus:ring-1 focus:ring-[#2c3e50]/20 font-be-vietnam text-sm"
                       />
                     </div>
@@ -146,6 +203,8 @@ export default function CheckoutPage() {
                     <input 
                       type="email" 
                       placeholder="example@gmail.com"
+                      value={customerInfo.email}
+                      onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
                       className="w-full p-4 bg-white border border-[#2c3e50]/10 rounded-[0.5rem] focus:outline-none focus:ring-1 focus:ring-[#2c3e50]/20 font-be-vietnam text-sm"
                     />
                   </div>
@@ -165,6 +224,8 @@ export default function CheckoutPage() {
                     <input 
                       type="text" 
                       placeholder="Enter Address"
+                      value={shippingAddress.addressLine1}
+                      onChange={(e) => setShippingAddress({ ...shippingAddress, addressLine1: e.target.value })}
                       className="w-full p-4 bg-white border border-[#2c3e50]/10 rounded-[0.5rem] focus:outline-none focus:ring-1 focus:ring-[#2c3e50]/20 font-be-vietnam text-sm"
                     />
                   </div>
@@ -173,6 +234,8 @@ export default function CheckoutPage() {
                     <input 
                       type="text" 
                       placeholder="Address..."
+                      value={shippingAddress.addressLine2}
+                      onChange={(e) => setShippingAddress({ ...shippingAddress, addressLine2: e.target.value })}
                       className="w-full p-4 bg-white border border-[#2c3e50]/10 rounded-[0.5rem] focus:outline-none focus:ring-1 focus:ring-[#2c3e50]/20 font-be-vietnam text-sm"
                     />
                   </div>
@@ -182,7 +245,9 @@ export default function CheckoutPage() {
                     <label className="text-sm font-medium font-be-vietnam text-[#2c3e50]">City*</label>
                     <input 
                       type="text" 
-                      defaultValue="Singapore"
+                      placeholder="Singapore"
+                      value={shippingAddress.city}
+                      onChange={(e) => setShippingAddress({ ...shippingAddress, city: e.target.value })}
                       className="w-full p-4 bg-white border border-[#2c3e50]/10 rounded-[0.5rem] focus:outline-none focus:ring-1 focus:ring-[#2c3e50]/20 font-be-vietnam text-sm"
                     />
                   </div>
@@ -191,6 +256,8 @@ export default function CheckoutPage() {
                     <input 
                       type="text" 
                       placeholder="123456"
+                      value={shippingAddress.postalCode}
+                      onChange={(e) => setShippingAddress({ ...shippingAddress, postalCode: e.target.value })}
                       className="w-full p-4 bg-white border border-[#2c3e50]/10 rounded-[0.5rem] focus:outline-none focus:ring-1 focus:ring-[#2c3e50]/20 font-be-vietnam text-sm"
                     />
                   </div>
@@ -200,6 +267,8 @@ export default function CheckoutPage() {
                    <textarea 
                     rows={4}
                     placeholder="Any special instructions for your order..."
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
                     className="w-full p-4 bg-white border border-[#2c3e50]/10 rounded-[0.5rem] focus:outline-none focus:ring-1 focus:ring-[#2c3e50]/20 font-be-vietnam text-sm resize-none"
                    />
                 </div>
@@ -282,11 +351,18 @@ export default function CheckoutPage() {
 
                 {/* CTA Button */}
                 <button 
-                   disabled={isCalculating}
+                   onClick={handlePayment}
+                   disabled={isCalculating || isProcessingPayment}
                    className="w-full py-5 bg-[#2c3e50] text-[#FCF9EE] rounded-2xl font-bold font-be-vietnam tracking-[0.2em] text-sm hover:bg-[#34495e] transition-all duration-300 shadow-xl shadow-[#2c3e50]/10 flex items-center justify-center space-x-3 group disabled:opacity-50"
                 >
-                   <span>PROCEED TO PAYMENT</span>
-                   <ChevronRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
+                   {isProcessingPayment ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                   ) : (
+                      <>
+                        <span>PROCEED TO PAYMENT</span>
+                        <ChevronRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
+                      </>
+                   )}
                 </button>
               </motion.div>
             </div>

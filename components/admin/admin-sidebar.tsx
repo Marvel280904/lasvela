@@ -63,6 +63,12 @@ export function AdminSidebar({ userRole }: AdminSidebarProps) {
       allowed: true
     },
     {
+      label: "Orders",
+      href: "/admin/orders",
+      icon: ShoppingBag,
+      allowed: true
+    },
+    {
       label: "Activity Logs",
       href: "/admin/logs",
       icon: Activity,
