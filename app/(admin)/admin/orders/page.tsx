@@ -294,7 +294,7 @@ export default function AdminOrdersPage() {
                           <Button 
                             variant="ghost" 
                             size="icon" 
-                            className="hover:bg-blue-50 text-blue-600 rounded-full h-8 w-8"
+                            className="hover:bg-blue-400 text-blue-600 rounded-full h-8 w-8"
                             onClick={() => handleViewDetail(order)}
                           >
                             <Eye className="w-4 h-4" />
@@ -302,7 +302,7 @@ export default function AdminOrdersPage() {
                           <Button 
                             variant="ghost" 
                             size="icon" 
-                            className="hover:bg-amber-50 text-amber-600 rounded-full h-8 w-8"
+                            className="hover:bg-amber-400 text-amber-600 rounded-full h-8 w-8"
                             onClick={() => handleEditOrder(order)}
                           >
                             <Pencil className="w-4 h-4" />
