@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function ProductPage() {
+function ProductContent() {
   const searchParams = useSearchParams();
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -265,5 +265,17 @@ export default function ProductPage() {
         onApply={(cats) => setSelectedCategories(cats)}
       />
     </main>
+  );
+}
+
+export default function ProductPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#F8F5EA] flex items-center justify-center">
+        <Loader2 className="w-10 h-10 animate-spin text-[#2C3E50]" />
+      </div>
+    }>
+      <ProductContent />
+    </Suspense>
   );
 }
