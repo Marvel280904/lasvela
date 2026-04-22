@@ -135,7 +135,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* The Collection Section */}
+      {/*  The Collection Section*/}
       <section className="bg-[#F8F5EA] py-24 px-6 md:px-12 lg:px-24">
         <div className="max-w-8xl mx-auto">
           {/* Header */}
@@ -157,10 +157,26 @@ export default function Home() {
           {/* Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6">
             {[
-              { name: "Chairs", src: "/images/chairs.png" },
-              { name: "Dining Table", src: "/images/dining-table.png" },
-              { name: "Sofas", src: "/images/sofas.png" },
-              { name: "Bedframes", src: "/images/bedframes.png" },
+              { 
+                name: "Chairs", 
+                src: "/images/chairs.png",
+                href: "/product?categories=chair"
+              },
+              { 
+                name: "Dining Table", 
+                src: "/images/dining-table.png",
+                href: "/product?categories=coffee table,drawer,extendable table,rectangle table,round table,side table"
+              },
+              { 
+                name: "Sofas", 
+                src: "/images/sofas.png",
+                href: "/product?categories=single sofa,sofa"
+              },
+              { 
+                name: "Bedframes", 
+                src: "/images/bedframes.png",
+                href: "/product?categories=bedframe"
+              },
             ].map((item, idx) => (
               <motion.div
                 key={item.name}
@@ -169,7 +185,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
               >
-                <Link href="/product" className="group block">
+                <Link href={item.href} className="group block">
                   <div className="relative aspect-[4/3] overflow-hidden rounded-lg shadow-sm group-hover:shadow-xl transition-all duration-500">
                     <Image
                       src={item.src}
@@ -311,9 +327,11 @@ export default function Home() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <button className="bg-[#2c3e50] text-white py-5 font-be-vietnam text-sm tracking-[0.3em] hover:bg-[#34495e] transition-all shadow-xl w-full">
-                VISIT OUR SHOWROOM
-              </button>
+              <Link href="/showroom">
+                <button className="bg-[#2c3e50] text-white py-5 font-be-vietnam text-sm tracking-[0.3em] hover:bg-[#34495e] transition-all shadow-xl w-full">
+                  VISIT OUR SHOWROOM
+                </button>
+              </Link>
             </motion.div>
           </motion.div>
 

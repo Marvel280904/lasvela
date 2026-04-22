@@ -83,8 +83,11 @@ export function CategoryFilter({ isOpen, onClose, selectedCategories, onApply }:
 
   const toggleCategory = (categoryName: string) => {
     setLocalSelected(prev => {
-      if (prev.includes(categoryName)) {
-        return prev.filter(c => c !== categoryName);
+      const lowerName = categoryName.toLowerCase();
+      const existing = prev.find(c => c.toLowerCase() === lowerName);
+      
+      if (existing) {
+        return prev.filter(c => c.toLowerCase() !== lowerName);
       } else {
         return [...prev, categoryName];
       }
@@ -181,7 +184,7 @@ export function CategoryFilter({ isOpen, onClose, selectedCategories, onApply }:
                             >
                               <div className="flex flex-wrap gap-2.5 pt-1 pb-2">
                                 {parent.children.map((child) => {
-                                  const isSelected = localSelected.includes(child.name);
+                                  const isSelected = localSelected.some(c => c.toLowerCase() === child.name.toLowerCase());
                                   return (
                                     <button
                                       key={child.id}

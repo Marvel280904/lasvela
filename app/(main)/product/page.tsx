@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, SlidersHorizontal, Loader2 } from "lucide-react";
 import { fetchAllProductsFromApi } from "@/lib/product-service";
 import type { Product } from "@/lib/db/schema";
+import { useSearchParams } from "next/navigation";
 import { CategoryFilter } from "@/components/category-filter";
 import {
   Select,
@@ -17,6 +18,7 @@ import {
 } from "@/components/ui/select";
 
 export default function ProductPage() {
+  const searchParams = useSearchParams();
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   
@@ -25,6 +27,15 @@ export default function ProductPage() {
   const [sortBy, setSortBy] = useState("Recommendation");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  // Read categories from URL on mount
+  useEffect(() => {
+    const categoriesParam = searchParams.get("categories");
+    if (categoriesParam) {
+      const cats = categoriesParam.split(",").map(c => c.trim());
+      setSelectedCategories(cats);
+    }
+  }, [searchParams]);
 
   // Fetch Products on Mount
   useEffect(() => {
@@ -66,7 +77,8 @@ export default function ProductPage() {
 
     // 1. Filter by category
     if (selectedCategories.length > 0) {
-      result = result.filter(p => selectedCategories.includes(p.category));
+      const lowerSelected = selectedCategories.map(c => c.toLowerCase());
+      result = result.filter(p => lowerSelected.includes(p.category.toLowerCase()));
     }
 
     // 2. Filter by search term
