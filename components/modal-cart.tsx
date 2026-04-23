@@ -228,7 +228,7 @@ export function ModalCart() {
                      {randomProducts.map(p => {
                        const imageUrl = p.thumbnailImage || (p.images && p.images.length > 0 ? p.images[0] : '/placeholder.jpg');
                        return (
-                         <div key={p.id} className="border border-[#2c3e50]/10 p-3 bg-white hover:shadow-lg transition-all group flex flex-col">
+                         <div key={p.id} className="border border-[#2c3e50]/10 p-3 bg-white hover:shadow-lg group flex flex-col">
                             <Link href={`/product/${p.slug}`} className="block flex-1 mb-3" onClick={closeCart}>
                               <div className="w-full aspect-square flex items-center justify-center overflow-hidden mb-3 p-2 bg-[#2c3e50]/5">
                                  <img src={imageUrl} alt={p.name} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition" />

@@ -172,20 +172,24 @@ export default function About() {
         <section className="bg-[#2c3e50] py-20 px-6 md:px-12 xl:px-24">
             <div className="max-w-8xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-                    {[1, 2, 3].map((item) => (
+                    {[
+                        { value: "5/5", label: "Ratings" },
+                        { value: "500+", label: "customers" },
+                        { value: "2024", label: "since" }
+                    ].map((item, index) => (
                         <motion.div
-                            key={item}
+                            key={index}
                             initial={{ opacity: 0, scale: 0.9 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: item * 0.1 }}
+                            transition={{ duration: 0.6, delay: index * 0.1 }}
                             className="space-y-4"
                         >
-                            <h3 className="text-5xl md:text-6xl font-michroma font-bold text-white tracking-widest">
-                                00+
+                            <h3 className="text-5xl md:text-6xl font-michroma font-bold text-white tracking-widest uppercase">
+                                {item.value}
                             </h3>
                             <p className="text-white/60 font-be-vietnam text-sm md:text-base uppercase tracking-widest">
-                                Lorem Ipsum
+                                {item.label}
                             </p>
                         </motion.div>
                     ))}
@@ -307,7 +311,7 @@ export default function About() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8, delay: index * 0.2 }}
-                            className="bg-white p-10 lg:p-6 xl:p-12 border border-gray-100/50 shadow-sm hover:shadow-xl transition-all duration-500 group"
+                            className="bg-white p-10 lg:p-6 xl:p-12 border border-gray-100/50 shadow-sm hover:shadow-xl group"
                         >
                             <div className="w-14 h-14 rounded-full bg-[#2c3e50] flex items-center justify-center text-white mb-10 transition-transform duration-500 group-hover:scale-110">
                                 <service.icon className="w-6 h-6" strokeWidth={1.5} />
