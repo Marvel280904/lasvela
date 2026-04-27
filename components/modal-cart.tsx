@@ -37,6 +37,8 @@ export function ModalCart() {
   const fetchRandomProducts = async () => {
     try {
       setLoadingProducts(true);
+      // Give 1 second delay so the modal animation finishes first to avoid glitch
+      await new Promise(resolve => setTimeout(resolve, 500));
       const res = await fetchAllProductsFromApi();
       const allData = res.data || [];
       

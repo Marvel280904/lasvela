@@ -81,6 +81,7 @@ export default function Contact() {
             alt="Home Hero Background"
             fill
             priority
+            quality={100}
             sizes="100vw"
             className="object-cover object-[60%_50%]"
             />

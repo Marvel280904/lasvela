@@ -21,6 +21,7 @@ export default function About() {
             alt="Home Hero Background"
             fill
             priority
+            quality={100}
             sizes="100vw"
             className="object-cover object-[65%_30%]"
             />
