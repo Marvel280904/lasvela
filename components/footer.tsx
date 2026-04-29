@@ -46,8 +46,6 @@ export default function Footer() {
             </Link>
           </div>
 
-          <div className="space-y-6"></div>
-          
           {/* Showroom Column */}
           <div className="space-y-6">
             <h4 className="text-lg font-michroma font-bold tracking-wider">Showroom</h4>
@@ -55,6 +53,25 @@ export default function Footer() {
               <p>{footerData.showroom.address}</p>
               <p>{footerData.showroom.hours}</p>
             </div>
+          </div>
+
+          {/* terms & conditions */}
+          <div className="space-y-6 lg:pl-4">
+            <h3 className="text-white text-lg font-medium tracking-wide font-jakarta">Terms</h3>
+            <ul className="space-y-4 font-be-vietnam text-sm leading-relaxed text-gray-400">
+              <li>
+                <Link href="/terms?tab=warranty" className="hover:text-white transition-colors">Warranty</Link>
+              </li>
+              <li>
+                <Link href="/terms?tab=faq" className="hover:text-white transition-colors">FAQ</Link>
+              </li>
+              <li>
+                <Link href="/terms?tab=delivery" className="hover:text-white transition-colors">Delivery Information</Link>
+              </li>
+              <li>
+                <Link href="/terms?tab=return" className="hover:text-white transition-colors">Return Policy</Link>
+              </li>
+            </ul>
           </div>
 
           {/* Newsletter Column 
@@ -124,6 +141,25 @@ export default function Footer() {
               <p>{footerData.showroom.address}</p>
               <p>{footerData.showroom.hours}</p>
             </div>
+          </div>
+
+          {/* Mobile Terms & Conditions */}
+          <div className="grid grid-cols-2 items-start gap-4 py-8 border-b border-white/50">
+            <h4 className="text-[10px] font-michroma font-bold tracking-widest uppercase text-left opacity-80">Terms & Conditions</h4>
+            <ul className="space-y-2 font-be-vietnam text-[11px] leading-relaxed text-gray-400 text-right">
+              <li>
+                <Link href="/terms?tab=warranty" className="hover:text-white transition-colors">Warranty</Link>
+              </li>
+              <li>
+                <Link href="/terms?tab=faq" className="hover:text-white transition-colors">FAQ</Link>
+              </li>
+              <li>
+                <Link href="/terms?tab=delivery" className="hover:text-white transition-colors">Delivery Information</Link>
+              </li>
+              <li>
+                <Link href="/terms?tab=return" className="hover:text-white transition-colors">Return Policy</Link>
+              </li>
+            </ul>
           </div>
 
           {/* Mobile Newsletter 
